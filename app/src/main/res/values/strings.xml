@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">DSCR15</string>
+    <string name="bienvenido">¡Bienvenido!</string>
+    <string name="entrar">ENTRAR</string>
+    <string name="registro">REGISTRO</string>
+    <string name="email">E-mail</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="crearCuenta">CREAR CUENTA</string>
+    <string name="iniciarSesion">INICIAR SESIÓN</string>
+    <string name="salir">SALIR</string>
+    <string name="accesos">ACCESOS</string>
+    <string name="infoAccessAcceso">Fecha</string>
+    <string name="infoAccessValid">Es válido</string>
+</resources>
