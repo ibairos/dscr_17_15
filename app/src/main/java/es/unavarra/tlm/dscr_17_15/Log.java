@@ -12,7 +12,7 @@ import org.greenrobot.greendao.annotation.Index;
  */
 
 @Entity
-public class Log {
+public class Log {  //Logaritmo protocol
 
     @Id
     private Date access;
