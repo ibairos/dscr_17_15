@@ -4,11 +4,14 @@
     <string name="entrar">ENTRAR</string>
     <string name="registro">REGISTRO</string>
     <string name="email">E-mail</string>
-    <string name="contraseña">Contraseña</string>
+    <string name="password">Password</string>
+    <string name="repetirPaswword">Repite tu password</string>
     <string name="crearCuenta">CREAR CUENTA</string>
     <string name="iniciarSesion">INICIAR SESIÓN</string>
     <string name="salir">SALIR</string>
     <string name="accesos">ACCESOS</string>
     <string name="infoAccessAcceso">Fecha</string>
     <string name="infoAccessValid">Es válido</string>
+    <string name="usuario">Usuario</string>
+    <string name="nombre">Nombre</string>
 </resources>

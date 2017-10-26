@@ -24,6 +24,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/textoNombreRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/nombre"
+            android:inputType="textPersonName" />
+
+        <EditText
             android:id="@+id/textoEmailRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,11 +40,19 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/textoContraseñaRegistro"
+            android:id="@+id/textoPasswordRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/contraseña"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/textoPasswordRegistro2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/repetirPaswword"
             android:inputType="textPassword" />
 
         <Button
