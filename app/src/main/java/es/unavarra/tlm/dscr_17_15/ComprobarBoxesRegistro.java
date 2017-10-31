@@ -16,6 +16,7 @@ public class ComprobarBoxesRegistro implements View.OnClickListener {
 
     EditText nombre, email, password1, password2;
     Activity activity;
+    ClasePeticionesRest clasePeticionesRest;
 
     public ComprobarBoxesRegistro(EditText nombre, EditText email, EditText password1, EditText password2, Activity activity){
         this.nombre = nombre;
@@ -23,6 +24,7 @@ public class ComprobarBoxesRegistro implements View.OnClickListener {
         this.password1 = password1;
         this.password2 = password2;
         this.activity = activity;
+        clasePeticionesRest = new ClasePeticionesRest(activity);
     }
 
     @Override
@@ -33,30 +35,35 @@ public class ComprobarBoxesRegistro implements View.OnClickListener {
         String textoPassword2 = password2.getText().toString();
 
         Context context = view.getContext();
-        int duration = Toast.LENGTH_SHORT;
 
         if (textoPassword1.equals(textoPassword2)) {
 
             if (textoEmail.equals("") && textoPassword1.equals("")) {
                 CharSequence texto = "No has introducido ni email ni contraseña";
-                Toast.makeText(context, texto, duration).show();
+                Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
             } else {
                 if (textoEmail.equals("")) {
                     CharSequence texto = "No has introducido email";
-                    Toast.makeText(context, texto, duration).show();
+                    Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
                 } else if (textoPassword1.equals("")) {
                     CharSequence texto = "No has introducido contraseña";
-                    Toast.makeText(context, texto, duration).show();
+                    Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
                 } else {
                     CharSequence texto = "Tu cuenta " + textoEmail + " se ha creado correctamente";
-                    Toast.makeText(context, texto, duration).show();
-                    activity.finish();
+                    Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
+
+                    DatosRegistro datosRegistro = new DatosRegistro(textoEmail, textoPassword1, nombre.getText().toString());
+                    clasePeticionesRest.RegistrarUsuario(datosRegistro);
+
+
+                    //activity.finish();
                 }
             }
         }else{
             CharSequence texto = "Passwords diferentes";
-            Toast.makeText(context, texto, duration).show();
+            Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
         }
 
     }
+
 }
