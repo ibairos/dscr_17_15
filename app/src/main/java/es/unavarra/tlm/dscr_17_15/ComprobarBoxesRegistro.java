@@ -49,14 +49,8 @@ public class ComprobarBoxesRegistro implements View.OnClickListener {
                     CharSequence texto = "No has introducido contraseña";
                     Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
                 } else {
-                    CharSequence texto = "Tu cuenta " + textoEmail + " se ha creado correctamente";
-                    Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
-
                     DatosRegistro datosRegistro = new DatosRegistro(textoEmail, textoPassword1, nombre.getText().toString());
                     clasePeticionesRest.RegistrarUsuario(datosRegistro);
-
-
-                    //activity.finish();
                 }
             }
         }else{

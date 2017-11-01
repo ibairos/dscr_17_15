@@ -20,12 +20,13 @@ import java.util.regex.Pattern;
 public class ComprobarLogin implements View.OnClickListener {
 
     EditText email;
-    EditText contraseña;
+    EditText password;
     Activity activity;
+    ClasePeticionesRest clasePeticionesRest = new ClasePeticionesRest(activity);
 
-    public ComprobarLogin(EditText email, EditText contraseña, Activity activity){
+    public ComprobarLogin(EditText email, EditText password, Activity activity){
         this.email = email;
-        this.contraseña = contraseña;
+        this.password = password;
         this.activity = activity;
     }
 
@@ -33,56 +34,18 @@ public class ComprobarLogin implements View.OnClickListener {
     public void onClick(View view) {
 
         Context context = view.getContext();
-        int duration = Toast.LENGTH_SHORT;
 
         if (!isEmailValid(email.getText().toString())){
             CharSequence texto = "Email en formato incorrecto";
-            Toast toast = Toast.makeText(context, texto, duration);
-            toast.show();
-        }else if (!contraseña.getText().toString().equals("")){
-
-            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(activity, "db");
-            SQLiteDatabase db = helper.getWritableDatabase();
-            DaoMaster daoMaster = new DaoMaster(db);
-            DaoSession daoSession = daoMaster.newSession();
-            LogDao logDao = daoSession.getLogDao();
-
-            if (!contraseña.getText().toString().equals("dscr")){
-                CharSequence texto = "Contraseña incorrecta";
-                Toast toast = Toast.makeText(context, texto, duration);
-                toast.show();
-                Log log = new Log();
-                log.setAccess(new Date());
-                log.setMail(email.getText().toString());
-                log.setValid(false);
-                logDao.insert(log);
-            }else{
-                CharSequence texto = "Bienvenido "+email.getText().toString();
-                Toast toast = Toast.makeText(context, texto, duration);
-                toast.show();
-                guardarEmail(email.getText().toString(), context);
-                Log log = new Log();
-                log.setAccess(new Date());
-                log.setMail(email.getText().toString());
-                log.setValid(true);
-                logDao.insert(log);
-            }
-
+            Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
+        }else if (password.getText().toString().equals("")){
+            CharSequence texto = "Password vacía";
+            Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
         }else{
-            CharSequence texto = "Contraseña vacía";
-            Toast toast = Toast.makeText(context, texto, duration);
-            toast.show();
+            clasePeticionesRest.LoginUsuario(new DatosLogin(email.getText().toString(), password.getText().toString()));
         }
     }
 
-    public void guardarEmail(String emailSP, Context contexto){
-
-        SharedPreferences settings = contexto.getSharedPreferences("Config", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("email", emailSP);
-        editor.commit();
-        activity.finish();
-    }
 
     public boolean isEmailValid(String email)
     {

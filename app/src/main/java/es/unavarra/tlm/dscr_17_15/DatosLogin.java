@@ -1,17 +1,16 @@
 package es.unavarra.tlm.dscr_17_15;
 
 /**
- * Created by ibai on 10/31/17.
+ * Created by ibai on 11/1/17.
  */
 
-public class DatosRegistro{
+public class DatosLogin {
 
-    private String email, password, name;
+    private String email, password;
 
-    public DatosRegistro(String email, String password, String name) {
+    public DatosLogin(String email, String password) {
         this.email = email;
         this.password = password;
-        this.name = name;
     }
 
     public String getEmail() {
@@ -28,14 +27,6 @@ public class DatosRegistro{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
 }
