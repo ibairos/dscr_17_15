@@ -43,6 +43,7 @@ public class ComprobarLogin implements View.OnClickListener {
             Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
         }else{
             clasePeticionesRest.LoginUsuario(new DatosLogin(email.getText().toString(), password.getText().toString()));
+            activity.finish();
         }
     }
 

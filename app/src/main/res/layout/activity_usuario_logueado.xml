@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.unavarra.tlm.dscr_17_15.ListadoAccesos">
+    tools:context="es.unavarra.tlm.dscr_17_15.UsuarioLogueado">
 
     <ListView
-        android:id="@+id/ListViewAccesos"
+        android:id="@+id/ListViewChats"
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:layout_constraintTop_creator="1"
@@ -22,4 +22,6 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>
