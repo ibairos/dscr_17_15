@@ -2,11 +2,11 @@ package es.unavarra.tlm.dscr_17_15;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import es.unavarra.tlm.dscr_17_15.Objects.DatosRegistro;
 
 /**
  * Created by ibai on 9/28/17.
@@ -24,7 +24,7 @@ public class ComprobarRegistro implements View.OnClickListener {
         this.password1 = password1;
         this.password2 = password2;
         this.activity = activity;
-        clasePeticionesRest = new ClasePeticionesRest(activity);
+        clasePeticionesRest = new ClasePeticionesRest();
     }
 
     @Override
@@ -50,8 +50,7 @@ public class ComprobarRegistro implements View.OnClickListener {
                     Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
                 } else {
                     DatosRegistro datosRegistro = new DatosRegistro(textoEmail, textoPassword1, nombre.getText().toString());
-                    clasePeticionesRest.RegistrarUsuario(datosRegistro);
-                    activity.finish();
+                    clasePeticionesRest.RegistrarUsuario(datosRegistro, activity);
                 }
             }
         }else{

@@ -22,5 +22,6 @@ public class ManejadorOnClick implements View.OnClickListener {
     public void onClick(View view) {
         Intent intent = new Intent(actual, destino);
         actual.startActivity(intent);
+        //actual.finish();
     }
 }

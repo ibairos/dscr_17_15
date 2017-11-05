@@ -14,4 +14,7 @@
     <string name="infoAccessValid">Es válido</string>
     <string name="usuario">Usuario</string>
     <string name="nombre">Nombre</string>
+    <string name="chats">Chats</string>
+    <string name="inviteText">Invite someone to a chat</string>
+    <string name="invite">Invite</string>
 </resources>

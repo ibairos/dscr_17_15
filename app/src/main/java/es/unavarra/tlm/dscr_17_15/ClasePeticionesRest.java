@@ -4,27 +4,29 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.*;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import es.unavarra.tlm.dscr_17_15.Objects.Chat;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosInvitarChat;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosLogin;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosRegistro;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaInvitarChat;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
 
 /**
  * Created by dscr25 on 26/10/17.
@@ -33,20 +35,13 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 public class ClasePeticionesRest {
 
     public AsyncHttpClient client = new AsyncHttpClient();
-    Context context;
-    Activity activity;
 
-    public ClasePeticionesRest(Activity activity){
-        this.context = activity;
-        this.activity = activity;
-    }
-
-    public void RegistrarUsuario(DatosRegistro datosRegistro){
+    public void RegistrarUsuario(DatosRegistro datosRegistro, Activity activity){
 
         Gson gson = new Gson();
 
         try {
-            client.post(context, "https://api.messenger.tatai.es/v2/auth/register", new StringEntity(gson.toJson(datosRegistro)), "application/json", new RespuestaRegistro(context));
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/register", new StringEntity(gson.toJson(datosRegistro)), "application/json", new RespuestaRegistro(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -56,10 +51,10 @@ public class ClasePeticionesRest {
 
     public class RespuestaRegistro extends AsyncHttpResponseHandler{
 
-        Context context;
+        Activity activity;
 
-        public RespuestaRegistro(Context context){
-            this.context = context;
+        public RespuestaRegistro(Activity activity){
+            this.activity = activity;
         }
         @Override
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -67,20 +62,16 @@ public class ClasePeticionesRest {
             Gson gson = new Gson();
             DatosRespuestaRegistro datosRespuestaRegistro = gson.fromJson(new String(responseBody), DatosRespuestaRegistro.class);
 
-            /*CharSequence texto = "Tu usuario es: " + datosRespuestaRegistro.getUser().toString() + "\n " +
-                    "y tu sesion es: " + datosRespuestaRegistro.getSession().toString();
-            Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();*/
-
-            guardarUsuarioYSesion(datosRespuestaRegistro);
-            Intent intent = new Intent(context, UsuarioLogueado.class);
-            context.startActivity(intent);
+            guardarUsuarioYSesion(datosRespuestaRegistro, activity.getApplicationContext());
+            Intent intent = new Intent(activity.getApplicationContext(), UsuarioLogueado.class);
+            activity.getApplicationContext().startActivity(intent);
             activity.finish();
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
             CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
             for (int x = 0; x < headers.length; x++) {
                 android.util.Log.e("HEADER " + x, headers[x] + "");
             }
@@ -88,12 +79,12 @@ public class ClasePeticionesRest {
         }
     }
 
-    public void LoginUsuario(DatosLogin datosLogin){
+    public void LoginUsuario(DatosLogin datosLogin, Activity activity){
 
         Gson gson = new Gson();
 
         try {
-            client.post(context, "https://api.messenger.tatai.es/v2/auth/login", new StringEntity(gson.toJson(datosLogin)), "application/json", new RespuestaLogin(context));
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/login", new StringEntity(gson.toJson(datosLogin)), "application/json", new RespuestaLogin(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -102,11 +93,12 @@ public class ClasePeticionesRest {
 
     public class RespuestaLogin extends AsyncHttpResponseHandler{
 
-        Context context;
+        Activity activity;
 
-        public RespuestaLogin(Context context){
-            this.context = context;
+        public RespuestaLogin(Activity activity){
+            this.activity = activity;
         }
+
         @Override
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
@@ -114,13 +106,9 @@ public class ClasePeticionesRest {
             android.util.Log.e("JSON", new String(responseBody));
             DatosRespuestaRegistro datosRespuestaRegistro = gson.fromJson(new String(responseBody), DatosRespuestaRegistro.class);
 
-            /*CharSequence texto = "Tu usuario es: " + datosRespuestaRegistro.getUser().toString() + "\n " +
-                    "y tu sesion es: " + datosRespuestaRegistro.getSession().toString();
-            Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();*/
-
-            guardarUsuarioYSesion(datosRespuestaRegistro);
-            Intent intent = new Intent(context, UsuarioLogueado.class);
-            context.startActivity(intent);
+            guardarUsuarioYSesion(datosRespuestaRegistro, activity.getApplicationContext());
+            Intent intent = new Intent(activity.getApplicationContext(), UsuarioLogueado.class);
+            activity.getApplicationContext().startActivity(intent);
             activity.finish();
 
         }
@@ -128,47 +116,57 @@ public class ClasePeticionesRest {
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
             CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
             for (int x = 0; x < headers.length; x++) {
                 android.util.Log.e("HEADER " + x, headers[x] + "");
             }
         }
     }
 
+    public void InvitarChat(DatosInvitarChat datosInvitarChat, ArrayList<InfoChat> myList, Activity activity){
 
-
-
-
-
-
-    public HashMap crearMapadesdeObjeto(Object objeto){
-
-        HashMap<String, String> mapa = new HashMap<>();
         Gson gson = new Gson();
-        String objetoGSON = gson.toJson(objeto);
-        JSONObject jsonObject = null;
+
         try {
-            jsonObject = new JSONObject(objetoGSON);
-        } catch (JSONException e) {
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/invite", new StringEntity(gson.toJson(datosInvitarChat)), "application/json", new RespuestaInvitarChat(myList, activity));
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Iterator<?> keys = jsonObject.keys();
 
-        while (keys.hasNext()){
-            String key = (String)keys.next();
-            String value = null;
-            try {
-                value = jsonObject.getString(key);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            mapa.put(key, value);
-        }
-
-        return mapa;
     }
 
-    public void guardarUsuarioYSesion(DatosRespuestaRegistro datosRespuestaRegistro){
+    public class RespuestaInvitarChat extends AsyncHttpResponseHandler{
+
+        Activity activity;
+        ArrayList<InfoChat> myList;
+
+        public RespuestaInvitarChat(ArrayList<InfoChat> myList, Activity activity){
+            this.activity = activity;
+            this.myList = myList;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            Gson gson = new Gson();
+            android.util.Log.e("JSON", new String(responseBody));
+            DatosRespuestaInvitarChat datosRespuestaInvitarChat = gson.fromJson(new String(responseBody), DatosRespuestaInvitarChat.class);
+
+            dibujarChat(datosRespuestaInvitarChat.getChat(), myList, activity);
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            CharSequence texto = "ERROR: " + statusCode;
+            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
+            for (int x = 0; x < headers.length; x++) {
+                android.util.Log.e("HEADER " + x, headers[x] + "");
+            }
+        }
+    }
+
+    public void guardarUsuarioYSesion(DatosRespuestaRegistro datosRespuestaRegistro, Context context){
 
         SharedPreferences settings = context.getSharedPreferences("Config", 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -178,6 +176,18 @@ public class ClasePeticionesRest {
         editor.putString("token", datosRespuestaRegistro.getSession().getToken());
         editor.putString("valid_until", datosRespuestaRegistro.getSession().getValid_until().toString());
         editor.commit();
+
+    }
+
+    public void dibujarChat(Chat chat, ArrayList<InfoChat> myList, Activity activity){
+
+        ListView listaChats = activity.findViewById(R.id.ListViewChats);
+        myList.add(new InfoChat(chat.getUsers()[0].getEmail(), chat.getCreated_at().toString()));
+
+        AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity.getApplicationContext(), myList);
+        listaChats.setAdapter(adapterUsuarioLogueado);
+        adapterUsuarioLogueado.notifyDataSetChanged();
+
 
     }
 

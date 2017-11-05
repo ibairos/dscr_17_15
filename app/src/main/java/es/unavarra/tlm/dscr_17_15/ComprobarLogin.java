@@ -1,17 +1,15 @@
 package es.unavarra.tlm.dscr_17_15;
 
 import android.app.Activity;
-import android.app.usage.UsageEvents;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import es.unavarra.tlm.dscr_17_15.Objects.DatosLogin;
 
 /**
  * Created by ibai on 9/28/17.
@@ -22,7 +20,7 @@ public class ComprobarLogin implements View.OnClickListener {
     EditText email;
     EditText password;
     Activity activity;
-    ClasePeticionesRest clasePeticionesRest = new ClasePeticionesRest(activity);
+    ClasePeticionesRest clasePeticionesRest = new ClasePeticionesRest();
 
     public ComprobarLogin(EditText email, EditText password, Activity activity){
         this.email = email;
@@ -42,8 +40,7 @@ public class ComprobarLogin implements View.OnClickListener {
             CharSequence texto = "Password vacía";
             Toast.makeText(context, texto, Toast.LENGTH_SHORT).show();
         }else{
-            clasePeticionesRest.LoginUsuario(new DatosLogin(email.getText().toString(), password.getText().toString()));
-            activity.finish();
+            clasePeticionesRest.LoginUsuario(new DatosLogin(email.getText().toString(), password.getText().toString()), activity);
         }
     }
 

@@ -1,19 +1,19 @@
 package es.unavarra.tlm.dscr_17_15;
 
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UsuarioLogueado extends AppCompatActivity {
 
-    ArrayList<Log> myList = new ArrayList<Log>();
+    ArrayList<InfoChat> myList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,35 +24,33 @@ public class UsuarioLogueado extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ListView listView = (ListView)findViewById(R.id.ListViewAccesos);
+        ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
+        EditText cuadroInvite = (EditText)findViewById(R.id.CuadroInvitarChat);
+        Button botonInvitarChat = (Button)findViewById(R.id.BotonInvitarChat);
 
-        llenarLista();
+        botonInvitarChat.setOnClickListener(new InvitarChat(cuadroInvite, myList, this));
 
-        listView.setAdapter(new Adapter(getApplicationContext(), myList));
+        llenarListaDeMierda();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listaDeChats.setAdapter(new AdapterUsuarioLogueado(getApplicationContext(), myList));
+
+        listaDeChats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent i = new Intent(getApplicationContext(), InfoAccess.class);
+                /*Intent i = new Intent(getApplicationContext(), InfoAccess.class);
                 i.putExtra("posicion", position);
-                startActivity(i);
+                startActivity(i);*/
+                Toast.makeText(getApplicationContext(), "Chat Nº "+position, Toast.LENGTH_SHORT);
             }
         });
 
     }
 
-    public void llenarLista(){
+    public void llenarListaDeMierda(){
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "db");
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        DaoSession daoSession = daoMaster.newSession();
-        LogDao logDao = daoSession.getLogDao();
-
-        List l = logDao.queryBuilder().orderDesc(LogDao.Properties.Access).list();
-        for (int x = 0; x < l.size(); x++){
-            myList.add((Log)l.get(x));
+        for (int x = 0; x < 15; x++){
+            myList.add(new InfoChat("email"+x, "fecha"+x));
         }
 
     }
