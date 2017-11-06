@@ -17,4 +17,6 @@
     <string name="chats">Chats</string>
     <string name="inviteText">Invite someone to a chat</string>
     <string name="invite">Invite</string>
+    <string name="enviar">Enviar</string>
+    <string name="sugerenciaConversacion">Escribe aquí tu mensaje</string>
 </resources>

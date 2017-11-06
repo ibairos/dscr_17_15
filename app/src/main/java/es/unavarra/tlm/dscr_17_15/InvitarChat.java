@@ -6,6 +6,7 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosInvitarChat;
 
 /**
@@ -17,9 +18,9 @@ public class InvitarChat implements View.OnClickListener {
     EditText cuadroInvite;
     Activity activity;
     ClasePeticionesRest clasePeticionesRest = new ClasePeticionesRest();
-    ArrayList<InfoChat> myList;
+    ArrayList<Chat> myList;
 
-    public InvitarChat(EditText cuadroInvite, ArrayList<InfoChat> myList, Activity activity){
+    public InvitarChat(EditText cuadroInvite, ArrayList<Chat> myList, Activity activity){
         this.cuadroInvite = cuadroInvite;
         this.activity = activity;
         this.myList = myList;
