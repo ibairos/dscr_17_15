@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LayoutMensaje"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -7,22 +8,34 @@
     android:background="@color/colorAccent"
     android:gravity="top|start"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    tools:ignore="RtlHardcoded">
 
 
-    <TextView
-        android:id="@+id/TextoMensaje"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:padding="2dp"
-        android:textAppearance="@style/TextAppearance.AppCompat" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/FechaMensaje"
+        <TextView
+            android:id="@+id/TextoMensaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:padding="2dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/FechaMensaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+</LinearLayout>

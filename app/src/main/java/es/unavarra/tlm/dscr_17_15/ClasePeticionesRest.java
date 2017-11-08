@@ -33,6 +33,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaInvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListChats;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListMensajes;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
+import es.unavarra.tlm.dscr_17_15.Objects.Error;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
 
 /**
@@ -297,6 +298,93 @@ public class ClasePeticionesRest {
         }
     }
 
+    public void BorrarConversacion(Activity activity, Chat chat){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+
+        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/exit", new RespuestaBorrarConversacion(activity));
+
+    }
+
+    public class RespuestaBorrarConversacion extends AsyncHttpResponseHandler{
+
+        Activity activity;
+
+        public RespuestaBorrarConversacion(Activity activity){
+            this.activity = activity;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            String response = new String(responseBody);
+
+            if (response.equals("[]")){
+                ListChats(activity);
+            }else{
+                for (int x = 0; x < headers.length; x++) {
+                    android.util.Log.e("HEADER " + x, headers[x] + "");
+                }
+            }
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            CharSequence texto = "ERROR: " + statusCode;
+            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
+            for (int x = 0; x < headers.length; x++) {
+                android.util.Log.e("HEADER " + x, headers[x] + "");
+            }
+        }
+    }
+
+    public void CerrarSesion(Activity activity){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+
+        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/logout", new RespuestaCerrarSesion(activity));
+
+    }
+
+    public class RespuestaCerrarSesion extends AsyncHttpResponseHandler{
+
+        Activity activity;
+
+        public RespuestaCerrarSesion(Activity activity){
+            this.activity = activity;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            String response = new String(responseBody);
+
+            if (response.equals("[]")){
+                borrarSharedPreferences(activity.getApplicationContext());
+                Intent intent = new Intent(activity, MainActivity.class);
+                activity.startActivity(intent);
+            }else{
+                for (int x = 0; x < headers.length; x++) {
+                    android.util.Log.e("HEADER " + x, headers[x] + "");
+                }
+            }
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            CharSequence texto = "ERROR error: " + statusCode;
+            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
+            for (int x = 0; x < headers.length; x++) {
+                android.util.Log.e("HEADER " + x, headers[x] + "");
+            }
+        }
+    }
+
+
 
     public void guardarUsuarioYSesion(DatosRespuestaRegistro datosRespuestaRegistro, Context context){
 
@@ -306,7 +394,9 @@ public class ClasePeticionesRest {
         editor.putString("name", datosRespuestaRegistro.getUser().getName());
         editor.putString("email", datosRespuestaRegistro.getUser().getEmail());
         editor.putString("token", datosRespuestaRegistro.getSession().getToken());
-        editor.putString("valid_until", datosRespuestaRegistro.getSession().getValid_until().toString());
+        editor.putBoolean("sesion", true);
+        editor.putLong("valid_until", datosRespuestaRegistro.getSession().getValid_until().getTime());
+        Log.e("valid_until", datosRespuestaRegistro.getSession().getValid_until().getTime()+"");
         editor.commit();
 
     }
@@ -318,11 +408,9 @@ public class ClasePeticionesRest {
         List<Chat> myList = new ArrayList<>();
         for (int x = 0; x < datosRespuestaListChats.getChats().size(); x++){
             myList.add(datosRespuestaListChats.getChats().get(x));
-            Log.d("CUENTA", x+"");
         }
-        Log.d("CUENTA", "SIZE = "+myList.size());
 
-        AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity.getApplicationContext(), myList);
+        AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity, myList);
         listaChats.setAdapter(adapterUsuarioLogueado);
         listaChats.setOnItemClickListener(new ChatListClickListener(myList, activity));
         adapterUsuarioLogueado.notifyDataSetChanged();
@@ -354,6 +442,14 @@ public class ClasePeticionesRest {
         //listaMensajes.setOnItemClickListener(new ChatListClickListener(myList, activity));
         adapterMensajesConversacion.notifyDataSetChanged();
 
+    }
+
+    public static void borrarSharedPreferences(Context context){
+        SharedPreferences settings = context.getSharedPreferences("Config", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.putBoolean("sesion", false);
+        editor.commit();
     }
 
 

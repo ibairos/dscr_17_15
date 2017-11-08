@@ -30,12 +30,14 @@ public class UsuarioLogueado extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
+        //ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
         EditText cuadroInvite = (EditText)findViewById(R.id.CuadroInvitarChat);
         Button botonInvitarChat = (Button)findViewById(R.id.BotonInvitarChat);
+        View botonCerrarSesion = findViewById(R.id.BotonCerrarSesion);
 
         clasePeticionesRest.ListChats(this);
 
+        botonCerrarSesion.setOnClickListener(new CerrarSesion(this));
         botonInvitarChat.setOnClickListener(new InvitarChat(cuadroInvite, myList, this));
 
     }

@@ -19,4 +19,6 @@
     <string name="invite">Invite</string>
     <string name="enviar">Enviar</string>
     <string name="sugerenciaConversacion">Escribe aquí tu mensaje</string>
+    <string name="cerrarSesion">Cerrar sesión</string>
+    <string name="borrarConversacion">Borrar conversación</string>
 </resources>

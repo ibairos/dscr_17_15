@@ -2,6 +2,7 @@ package es.unavarra.tlm.dscr_17_15;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import java.util.List;
 
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
+
+import static android.graphics.Color.rgb;
 
 /**
  * Created by ibai on 10/19/17.
@@ -63,11 +66,15 @@ public class AdapterMensajesConversacion extends BaseAdapter {
         }
 
         SharedPreferences settings = context.getSharedPreferences("Config", 0);
-        String emailUsuario = settings.getString("user", "");
+        String emailUsuario = settings.getString("email", "");
         Message message = getItem(i);
         if (!message.getUser().getEmail().equals(emailUsuario)){
-            ((RelativeLayout)view).setHorizontalGravity(RelativeLayout.ALIGN_PARENT_LEFT);
-            //((TextView)view.findViewById(R.id.TextoMensaje))
+            Log.d("etiqueta", "M:"+message.getUser().getEmail());
+            Log.d("etiqueta", "U:"+emailUsuario);
+            //((RelativeLayout)view).setHorizontalGravity(RelativeLayout.ALIGN_PARENT_LEFT);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ((RelativeLayout)(((LinearLayout)view).getChildAt(0))).getChildAt(0).getLayoutParams();
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            view.setBackgroundColor(rgb(255, 255, 230));
         }
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("HH:mm");

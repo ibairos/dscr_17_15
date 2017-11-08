@@ -1,5 +1,6 @@
 package es.unavarra.tlm.dscr_17_15;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,12 +26,12 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
 
     List<Chat> chats;
     LayoutInflater inflater;
-    Context context;
+    Activity activity;
 
-    public AdapterUsuarioLogueado(Context context, List<Chat> chats) {
+    public AdapterUsuarioLogueado(Activity activity, List<Chat> chats) {
         this.chats = chats;
-        this.context = context;
-        inflater = LayoutInflater.from(this.context);
+        this.activity = activity;
+        inflater = LayoutInflater.from(this.activity);
     }
 
     @Override
@@ -66,21 +67,24 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
         Chat chat = getItem(i);
         Log.e("chat "+i, (new Gson()).toJson(chat));
 
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("MM-dd");
 
-        //auxInfoChat.fechaLogin.setText(formatoFecha.format(infoChat.getAccess()));
         auxChat.mailChat.setText(chat.getUsers()[0].getName());
         auxChat.fechaChat.setText(formatoFecha.format(chat.getCreated_at()));
+        auxChat.delete.setImageResource(R.drawable.trash);
+        auxChat.delete.setOnClickListener(new BorrarConversacion(activity, chat));
 
         return view;
     }
 
     private class AuxChat {
         TextView mailChat, fechaChat;
+        ImageView delete;
 
         public AuxChat(View view) {
             mailChat = view.findViewById(R.id.MailInfoChat);
             fechaChat = view.findViewById(R.id.FechaInfoChat);
+            delete = view.findViewById(R.id.BotonBorrarConversacion);
         }
     }
 }
