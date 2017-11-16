@@ -35,6 +35,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListChats;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListMensajes;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
 import es.unavarra.tlm.dscr_17_15.Objects.Error;
+import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaInicio;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
@@ -78,6 +79,7 @@ public class ClasePeticionesRest {
             Intent intent = new Intent(activity.getApplicationContext(), PantallaUsuarioLogueado.class);
             activity.getApplicationContext().startActivity(intent);
             activity.finish();
+
         }
 
         @Override
@@ -132,14 +134,14 @@ public class ClasePeticionesRest {
         }
     }
 
-    public void InvitarChat(DatosInvitarChat datosInvitarChat, List<Chat> myList, Activity activity){
+    public void InvitarChat(DatosInvitarChat datosInvitarChat, Activity activity){
 
         Gson gson = new Gson();
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
         try {
             client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/invite", new StringEntity(gson.toJson(datosInvitarChat)), "application/json", new RespuestaInvitarChat(myList, activity));
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/invite", new StringEntity(gson.toJson(datosInvitarChat)), "application/json", new RespuestaInvitarChat(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -149,11 +151,9 @@ public class ClasePeticionesRest {
     public class RespuestaInvitarChat extends AsyncHttpResponseHandler{
 
         Activity activity;
-        List<Chat> myList;
 
-        public RespuestaInvitarChat(List<Chat> myList, Activity activity){
+        public RespuestaInvitarChat(Activity activity){
             this.activity = activity;
-            this.myList = myList;
         }
 
         @Override
@@ -204,7 +204,9 @@ public class ClasePeticionesRest {
             DatosRespuestaListChats datosRespuestaListChats = gson.fromJson(new String(responseBody), DatosRespuestaListChats.class);
             android.util.Log.e("JSON", gson.toJson(datosRespuestaListChats));
 
-            dibujarChats(datosRespuestaListChats, activity);
+            cogerUltimosMensajes(activity, datosRespuestaListChats);
+
+            //dibujarChats(datosRespuestaListChats, activity);
 
         }
 
@@ -404,6 +406,52 @@ public class ClasePeticionesRest {
         }
     }
 
+    public void cogerUltimosMensajes(Activity activity, DatosRespuestaListChats datosRespuestaListChats){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+        String token = settings.getString("token", "");
+
+        for (int x = 0; x < datosRespuestaListChats.getCount(); x++) {
+            client.addHeader("X-AUTH-TOKEN", token);
+            client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/" + datosRespuestaListChats.getChats().get(x).getId() + "/messages", new RespuestaCogerUltimosMensajes(activity, datosRespuestaListChats.getChats().get(x)));
+        }
+
+        //dibujarChats(datosRespuestaListChats, activity);
+    }
+
+    public class RespuestaCogerUltimosMensajes extends AsyncHttpResponseHandler{
+
+        Activity activity;
+        Chat chat;
+
+        public RespuestaCogerUltimosMensajes(Activity activity, Chat chat){
+            this.activity = activity;
+            this.chat = chat;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            Gson gson = new Gson();
+            DatosRespuestaListMensajes datosRespuestaListMensajes = gson.fromJson(new String(responseBody), DatosRespuestaListMensajes.class);
+
+            Message ultimoMensaje;
+            if (datosRespuestaListMensajes.getMessages().size() != 0){
+                ultimoMensaje = datosRespuestaListMensajes.getMessages().get(datosRespuestaListMensajes.getMessages().size()-1);
+            }else{
+                ultimoMensaje = null;
+            }
+
+            dibujarChat(activity, chat, ultimoMensaje);
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+        }
+    }
+
 
 
     public void guardarUsuarioYSesion(DatosRespuestaRegistro datosRespuestaRegistro, Context context){
@@ -421,33 +469,17 @@ public class ClasePeticionesRest {
 
     }
 
-    public void dibujarChats(DatosRespuestaListChats datosRespuestaListChats, Activity activity){
+    public void dibujarChat(Activity activity, Chat chat, Message ultimoMensaje){
 
         ListView listaChats = activity.findViewById(R.id.ListViewChats);
 
-        List<Chat> myList = new ArrayList<>();
-        for (int x = 0; x < datosRespuestaListChats.getChats().size(); x++){
-            myList.add(datosRespuestaListChats.getChats().get(x));
-        }
+        PantallaUsuarioLogueado.myList.add(new InformacionListChat(chat, ultimoMensaje));
 
-        AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity, myList);
+
+        AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity, PantallaUsuarioLogueado.myList);
         listaChats.setAdapter(adapterUsuarioLogueado);
-        listaChats.setOnItemClickListener(new ChatListClickListener(myList, activity));
+        listaChats.setOnItemClickListener(new ChatListClickListener(PantallaUsuarioLogueado.myList, activity));
         adapterUsuarioLogueado.notifyDataSetChanged();
-
-
-    }
-
-    public void actualizarMensajes(Activity activity, DatosRespuestaEnviarMensaje datosRespuestaEnviarMensaje){
-
-        ListView listaMensajes = activity.findViewById(R.id.ListViewConversacion);
-
-        List<Message> myList = datosRespuestaEnviarMensaje.getMessages();
-
-        AdapterMensajesConversacion adapterMensajesConversacion = new AdapterMensajesConversacion(activity.getApplicationContext(), myList);
-        listaMensajes.setAdapter(adapterMensajesConversacion);
-        //listaMensajes.setOnItemClickListener(new ChatListClickListener(myList, activity));
-        adapterMensajesConversacion.notifyDataSetChanged();
 
     }
 
@@ -511,6 +543,5 @@ public class ClasePeticionesRest {
         Snackbar.make(view, texto, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
-
 
 }

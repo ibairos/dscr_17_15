@@ -16,6 +16,7 @@ import java.util.List;
 
 import es.unavarra.tlm.dscr_17_15.EventListeners.BorrarConversacion;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
+import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.R;
 
 /**
@@ -24,11 +25,11 @@ import es.unavarra.tlm.dscr_17_15.R;
 
 public class AdapterUsuarioLogueado extends BaseAdapter {
 
-    List<Chat> chats;
+    List<InformacionListChat> chats;
     LayoutInflater inflater;
     Activity activity;
 
-    public AdapterUsuarioLogueado(Activity activity, List<Chat> chats) {
+    public AdapterUsuarioLogueado(Activity activity, List<InformacionListChat> chats) {
         this.chats = chats;
         this.activity = activity;
         inflater = LayoutInflater.from(this.activity);
@@ -40,7 +41,7 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
     }
 
     @Override
-    public Chat getItem(int i) {
+    public InformacionListChat getItem(int i) {
         return chats.get(i);
     }
 
@@ -54,7 +55,7 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
         AuxChat auxChat;
 
         if (view == null) {
-            view = inflater.inflate(R.layout.usuario_logueado_list_item, viewGroup, false);
+            view = inflater.inflate(R.layout.chats_list_item, viewGroup, false);
             auxChat = new AuxChat(view);
             view.setTag(auxChat);
             Log.e("IT", "1");
@@ -64,13 +65,16 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
         }
 
 
-        Chat chat = getItem(i);
+        Chat chat = getItem(i).getChat();
         Log.e("chat "+i, (new Gson()).toJson(chat));
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("MM-dd");
 
         auxChat.mailChat.setText(chat.getUsers()[0].getName());
         auxChat.fechaChat.setText(formatoFecha.format(chat.getCreated_at()));
+        if (getItem(i).getUltimoMensaje() != null){
+            auxChat.ultimoMensaje.setText(getItem(i).getUltimoMensaje().getText());
+        }
         auxChat.delete.setImageResource(R.drawable.trash);
         auxChat.delete.setOnClickListener(new BorrarConversacion(activity, chat));
 
@@ -78,12 +82,13 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
     }
 
     private class AuxChat {
-        TextView mailChat, fechaChat;
+        TextView mailChat, fechaChat, ultimoMensaje;
         ImageView delete;
 
         public AuxChat(View view) {
             mailChat = view.findViewById(R.id.MailInfoChat);
             fechaChat = view.findViewById(R.id.FechaInfoChat);
+            ultimoMensaje = view.findViewById(R.id.UltimoMensaje);
             delete = view.findViewById(R.id.BotonBorrarConversacion);
         }
     }

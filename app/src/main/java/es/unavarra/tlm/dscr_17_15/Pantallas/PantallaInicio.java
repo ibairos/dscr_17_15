@@ -27,13 +27,13 @@ public class PantallaInicio extends AppCompatActivity {
         if (ClasePeticionesRest.sesionAbierta(this)) {
             if (ClasePeticionesRest.tokenExpirado(this)) {
                 Toast.makeText(this, "Sesión caducada", Toast.LENGTH_SHORT).show();
+                ClasePeticionesRest.borrarSharedPreferences(this);
             } else {
                 Intent intent = new Intent(this, PantallaUsuarioLogueado.class);
                 startActivity(intent);
                 finish();
             }
         }
-        ClasePeticionesRest.borrarSharedPreferences(this);
 
     }
 

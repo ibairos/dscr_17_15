@@ -9,6 +9,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import es.unavarra.tlm.dscr_17_15.EventListeners.CerrarSesion;
+import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.EventListeners.InvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
@@ -16,19 +17,21 @@ import es.unavarra.tlm.dscr_17_15.R;
 
 public class PantallaUsuarioLogueado extends AppCompatActivity {
 
-    ArrayList<Chat> myList = new ArrayList<>();
+    public static ArrayList<InformacionListChat> myList = new ArrayList<>();
     ClasePeticionesRest clasePeticionesRest = new ClasePeticionesRest();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myList.clear();
         setContentView(R.layout.activity_usuario_logueado);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        myList.clear();
         //ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
         EditText cuadroInvite = (EditText)findViewById(R.id.CuadroInvitarChat);
         Button botonInvitarChat = (Button)findViewById(R.id.BotonInvitarChat);
@@ -37,7 +40,7 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         clasePeticionesRest.ListChats(this);
 
         botonCerrarSesion.setOnClickListener(new CerrarSesion(this));
-        botonInvitarChat.setOnClickListener(new InvitarChat(cuadroInvite, myList, this));
+        botonInvitarChat.setOnClickListener(new InvitarChat(cuadroInvite, this));
 
     }
 

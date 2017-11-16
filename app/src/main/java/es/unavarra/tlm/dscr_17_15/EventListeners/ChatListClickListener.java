@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
+import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaConversacion;
 
 /**
@@ -18,10 +19,10 @@ import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaConversacion;
 
 public class ChatListClickListener implements AdapterView.OnItemClickListener {
 
-    List<Chat> chats;
+    List<InformacionListChat> chats;
     Activity activity;
 
-    public ChatListClickListener(List<Chat> chats, Activity activity){
+    public ChatListClickListener(List<InformacionListChat> chats, Activity activity){
         this.chats = chats;
         this.activity = activity;
     }
@@ -30,7 +31,7 @@ public class ChatListClickListener implements AdapterView.OnItemClickListener {
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
         Intent intent = new Intent(activity, PantallaConversacion.class);
-        intent.putExtra("chat", (new Gson()).toJson(chats.get(i)));
+        intent.putExtra("chat", (new Gson()).toJson(chats.get(i).getChat()));
         activity.startActivity(intent);
 
     }
