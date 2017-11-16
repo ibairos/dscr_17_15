@@ -21,7 +21,7 @@
         <activity android:name=".Pantallas.PantallaRegistro" />
         <activity android:name=".Pantallas.PantallaLogin" />
         <activity android:name=".Pantallas.PantallaUsuarioLogueado" />
-        <activity android:name=".Pantallas.PantallaConversacion"></activity>
+        <activity android:name=".Pantallas.PantallaConversacion" />
     </application>
 
 </manifest>

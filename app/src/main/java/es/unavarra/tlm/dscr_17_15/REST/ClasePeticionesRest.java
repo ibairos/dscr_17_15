@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -14,6 +16,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -30,6 +34,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaEnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListChats;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListMensajes;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
+import es.unavarra.tlm.dscr_17_15.Objects.Error;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaInicio;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
@@ -77,12 +82,10 @@ public class ClasePeticionesRest {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
-            }
-            android.util.Log.e("RESPONSE", new String(responseBody));
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -122,11 +125,10 @@ public class ClasePeticionesRest {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
-            }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -167,11 +169,14 @@ public class ClasePeticionesRest {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
+            if (statusCode == 403){
+                toastLargo(activity, "Sesion expirada");
+                CerrarSesion(activity);
             }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -205,11 +210,14 @@ public class ClasePeticionesRest {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
+            if (statusCode == 403){
+                toastLargo(activity, "Sesion expirada");
+                CerrarSesion(activity);
             }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -251,12 +259,14 @@ public class ClasePeticionesRest {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERRORR: " + statusCode;
-            Log.e("RESPUESTA", new String(responseBody));
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
+            if (statusCode == 403){
+                toastLargo(activity, "Sesion expirada");
+                CerrarSesion(activity);
             }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -289,11 +299,14 @@ public class ClasePeticionesRest {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
+            if (statusCode == 403){
+                toastLargo(activity, "Sesion expirada");
+                CerrarSesion(activity);
             }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -331,11 +344,14 @@ public class ClasePeticionesRest {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERROR: " + statusCode;
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
+            if (statusCode == 403){
+                toastLargo(activity, "Sesion expirada");
+                CerrarSesion(activity);
             }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -365,21 +381,26 @@ public class ClasePeticionesRest {
                 borrarSharedPreferences(activity.getApplicationContext());
                 Intent intent = new Intent(activity, PantallaInicio.class);
                 activity.startActivity(intent);
+                activity.finish();
             }else{
                 for (int x = 0; x < headers.length; x++) {
                     android.util.Log.e("HEADER " + x, headers[x] + "");
                 }
+                toastCorto(activity, "Error al cerrar la sesión");
             }
 
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            CharSequence texto = "ERROR error: " + statusCode;
-            Toast.makeText(activity.getApplicationContext(), texto, Toast.LENGTH_SHORT).show();
-            for (int x = 0; x < headers.length; x++) {
-                android.util.Log.e("HEADER " + x, headers[x] + "");
+            if (statusCode == 403){
+                toastLargo(activity, "Sesion expirada");
+                CerrarSesion(activity);
             }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getDescription());
         }
     }
 
@@ -449,6 +470,46 @@ public class ClasePeticionesRest {
         editor.clear();
         editor.putBoolean("sesion", false);
         editor.commit();
+    }
+
+    public static boolean tokenExpirado(Activity activity){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+
+        if (settings.getBoolean("sesion", false)) {
+            Date now = Calendar.getInstance().getTime();
+            long valid_until_long = settings.getLong("valid_until", 0);
+            Date valid_until_date = new Date(valid_until_long);
+
+            if (now.before(valid_until_date)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        return true;
+
+    }
+
+    public static boolean sesionAbierta(Activity activity){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+        return settings.getBoolean("sesion", false);
+
+    }
+
+    public static void toastCorto(Activity activity, String text){
+        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void toastLargo(Activity activity, String text){
+        Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+    }
+
+    public static void mostrarSnackbar(View view, String texto){
+        Snackbar.make(view, texto, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
 

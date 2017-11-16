@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,30 +21,19 @@ public class PantallaInicio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences("Config", 0);
+        findViewById(R.id.botonRegistro).setOnClickListener(new ManejadorOnClick(this, PantallaRegistro.class));
+        findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, PantallaLogin.class));
 
-        if (settings.getBoolean("sesion", false)){
-            Date now = Calendar.getInstance().getTime();
-            long valid_until_long = settings.getLong("valid_until", 0);
-            Date valid_until_date = new Date(valid_until_long);
-
-            if (now.before(valid_until_date)){
+        if (ClasePeticionesRest.sesionAbierta(this)) {
+            if (ClasePeticionesRest.tokenExpirado(this)) {
+                Toast.makeText(this, "Sesión caducada", Toast.LENGTH_SHORT).show();
+            } else {
                 Intent intent = new Intent(this, PantallaUsuarioLogueado.class);
                 startActivity(intent);
                 finish();
-            }else{
-                Log.d("xyz", "NOW: " + now.toString());
-                Log.d("xyz", "VALID_UNTIL: " + valid_until_date.toString());
             }
-            findViewById(R.id.botonRegistro).setOnClickListener(new ManejadorOnClick(this, PantallaRegistro.class));
-            findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, PantallaLogin.class));
-
-        }else{
-            ClasePeticionesRest.borrarSharedPreferences(this);
-            findViewById(R.id.botonRegistro).setOnClickListener(new ManejadorOnClick(this, PantallaRegistro.class));
-            findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, PantallaLogin.class));
         }
-
+        ClasePeticionesRest.borrarSharedPreferences(this);
 
     }
 
