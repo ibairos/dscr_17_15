@@ -8,13 +8,13 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
-import es.unavarra.tlm.dscr_17_15.Tools.CerrarSesion;
+import es.unavarra.tlm.dscr_17_15.EventListeners.CerrarSesion;
 import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
-import es.unavarra.tlm.dscr_17_15.Tools.InvitarChat;
+import es.unavarra.tlm.dscr_17_15.EventListeners.InvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.R;
 
-public class UsuarioLogueado extends AppCompatActivity {
+public class PantallaUsuarioLogueado extends AppCompatActivity {
 
     ArrayList<Chat> myList = new ArrayList<>();
     ClasePeticionesRest clasePeticionesRest = new ClasePeticionesRest();

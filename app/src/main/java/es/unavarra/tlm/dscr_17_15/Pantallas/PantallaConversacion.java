@@ -8,11 +8,11 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
-import es.unavarra.tlm.dscr_17_15.Tools.EnviarMensaje;
+import es.unavarra.tlm.dscr_17_15.EventListeners.EnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.R;
 
-public class Conversacion extends AppCompatActivity {
+public class PantallaConversacion extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

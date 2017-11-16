@@ -4,10 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
-import es.unavarra.tlm.dscr_17_15.Tools.ComprobarLogin;
+import es.unavarra.tlm.dscr_17_15.EventListeners.ComprobarLogin;
 import es.unavarra.tlm.dscr_17_15.R;
 
-public class Login extends AppCompatActivity {
+public class PantallaLogin extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

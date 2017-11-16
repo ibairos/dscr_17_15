@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
-import es.unavarra.tlm.dscr_17_15.Tools.ComprobarRegistro;
+import es.unavarra.tlm.dscr_17_15.EventListeners.ComprobarRegistro;
 import es.unavarra.tlm.dscr_17_15.R;
 
-public class Registro extends AppCompatActivity {
+public class PantallaRegistro extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class Registro extends AppCompatActivity {
         SharedPreferences settings = getApplicationContext().getSharedPreferences("Config", 0);
         boolean sesion = settings.getBoolean("sesion", false);
         if (!sesion){
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, PantallaInicio.class);
             startActivity(intent);
         }
     }

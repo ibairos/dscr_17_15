@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
-import es.unavarra.tlm.dscr_17_15.Pantallas.Conversacion;
+import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaConversacion;
 
 /**
  * Created by ibai on 11/5/17.
@@ -29,7 +29,7 @@ public class ChatListClickListener implements AdapterView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        Intent intent = new Intent(activity, Conversacion.class);
+        Intent intent = new Intent(activity, PantallaConversacion.class);
         intent.putExtra("chat", (new Gson()).toJson(chats.get(i)));
         activity.startActivity(intent);
 

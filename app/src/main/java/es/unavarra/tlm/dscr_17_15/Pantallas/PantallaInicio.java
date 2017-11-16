@@ -13,7 +13,7 @@ import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.EventListeners.ManejadorOnClick;
 import es.unavarra.tlm.dscr_17_15.R;
 
-public class MainActivity extends AppCompatActivity {
+public class PantallaInicio extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,20 +28,20 @@ public class MainActivity extends AppCompatActivity {
             Date valid_until_date = new Date(valid_until_long);
 
             if (now.before(valid_until_date)){
-                Intent intent = new Intent(this, UsuarioLogueado.class);
+                Intent intent = new Intent(this, PantallaUsuarioLogueado.class);
                 startActivity(intent);
                 finish();
             }else{
                 Log.d("xyz", "NOW: " + now.toString());
                 Log.d("xyz", "VALID_UNTIL: " + valid_until_date.toString());
             }
-            findViewById(R.id.botonRegistro).setOnClickListener(new ManejadorOnClick(this, Registro.class));
-            findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, Login.class));
+            findViewById(R.id.botonRegistro).setOnClickListener(new ManejadorOnClick(this, PantallaRegistro.class));
+            findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, PantallaLogin.class));
 
         }else{
             ClasePeticionesRest.borrarSharedPreferences(this);
-            findViewById(R.id.botonRegistro).setOnClickListener(new ManejadorOnClick(this, Registro.class));
-            findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, Login.class));
+            findViewById(R.id.botonRegistro).setOnClickListener(new ManejadorOnClick(this, PantallaRegistro.class));
+            findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, PantallaLogin.class));
         }
 
 

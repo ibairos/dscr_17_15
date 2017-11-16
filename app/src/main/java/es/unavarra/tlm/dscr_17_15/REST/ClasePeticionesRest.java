@@ -31,8 +31,8 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListChats;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListMensajes;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
-import es.unavarra.tlm.dscr_17_15.Pantallas.MainActivity;
-import es.unavarra.tlm.dscr_17_15.Pantallas.UsuarioLogueado;
+import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaInicio;
+import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
 import es.unavarra.tlm.dscr_17_15.R;
 
 /**
@@ -70,7 +70,7 @@ public class ClasePeticionesRest {
             DatosRespuestaRegistro datosRespuestaRegistro = gson.fromJson(new String(responseBody), DatosRespuestaRegistro.class);
 
             guardarUsuarioYSesion(datosRespuestaRegistro, activity.getApplicationContext());
-            Intent intent = new Intent(activity.getApplicationContext(), UsuarioLogueado.class);
+            Intent intent = new Intent(activity.getApplicationContext(), PantallaUsuarioLogueado.class);
             activity.getApplicationContext().startActivity(intent);
             activity.finish();
         }
@@ -114,7 +114,7 @@ public class ClasePeticionesRest {
             DatosRespuestaRegistro datosRespuestaRegistro = gson.fromJson(new String(responseBody), DatosRespuestaRegistro.class);
 
             guardarUsuarioYSesion(datosRespuestaRegistro, activity.getApplicationContext());
-            Intent intent = new Intent(activity.getApplicationContext(), UsuarioLogueado.class);
+            Intent intent = new Intent(activity.getApplicationContext(), PantallaUsuarioLogueado.class);
             activity.getApplicationContext().startActivity(intent);
             activity.finish();
 
@@ -363,7 +363,7 @@ public class ClasePeticionesRest {
 
             if (response.equals("[]")){
                 borrarSharedPreferences(activity.getApplicationContext());
-                Intent intent = new Intent(activity, MainActivity.class);
+                Intent intent = new Intent(activity, PantallaInicio.class);
                 activity.startActivity(intent);
             }else{
                 for (int x = 0; x < headers.length; x++) {

@@ -11,17 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Pantallas.MainActivity">
+        <activity android:name=".Pantallas.PantallaInicio">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Pantallas.Registro" />
-        <activity android:name=".Pantallas.Login" />
-        <activity android:name=".Pantallas.UsuarioLogueado" />
-        <activity android:name=".Pantallas.Conversacion"></activity>
+        <activity android:name=".Pantallas.PantallaRegistro" />
+        <activity android:name=".Pantallas.PantallaLogin" />
+        <activity android:name=".Pantallas.PantallaUsuarioLogueado" />
+        <activity android:name=".Pantallas.PantallaConversacion"></activity>
     </application>
 
 </manifest>

@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import es.unavarra.tlm.dscr_17_15.Tools.BorrarConversacion;
+import es.unavarra.tlm.dscr_17_15.EventListeners.BorrarConversacion;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.R;
 
