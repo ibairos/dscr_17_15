@@ -1,4 +1,4 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Tools;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosLogin;
 
 /**

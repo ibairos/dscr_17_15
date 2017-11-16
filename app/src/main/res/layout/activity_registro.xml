@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.unavarra.tlm.dscr_17_15.Registro">
+    tools:context="es.unavarra.tlm.dscr_17_15.Pantallas.Registro">
 
     <LinearLayout
         android:layout_width="0dp"

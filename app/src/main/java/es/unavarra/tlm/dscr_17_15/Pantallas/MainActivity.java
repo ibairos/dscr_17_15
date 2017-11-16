@@ -1,4 +1,4 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Pantallas;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
+import es.unavarra.tlm.dscr_17_15.EventListeners.ManejadorOnClick;
+import es.unavarra.tlm.dscr_17_15.R;
 
 public class MainActivity extends AppCompatActivity {
 

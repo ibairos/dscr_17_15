@@ -1,4 +1,4 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,6 +19,7 @@ import java.util.List;
 
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
+import es.unavarra.tlm.dscr_17_15.R;
 
 import static android.graphics.Color.rgb;
 

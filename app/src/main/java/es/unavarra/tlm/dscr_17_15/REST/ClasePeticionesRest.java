@@ -1,4 +1,4 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.REST;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,29 +12,28 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import es.unavarra.tlm.dscr_17_15.Adapters.AdapterMensajesConversacion;
+import es.unavarra.tlm.dscr_17_15.Adapters.AdapterUsuarioLogueado;
+import es.unavarra.tlm.dscr_17_15.EventListeners.ChatListClickListener;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosEnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosInvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosLogin;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRegistro;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaEnviarMensaje;
-import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaInvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListChats;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListMensajes;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
-import es.unavarra.tlm.dscr_17_15.Objects.Error;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
+import es.unavarra.tlm.dscr_17_15.Pantallas.MainActivity;
+import es.unavarra.tlm.dscr_17_15.Pantallas.UsuarioLogueado;
+import es.unavarra.tlm.dscr_17_15.R;
 
 /**
  * Created by dscr25 on 26/10/17.

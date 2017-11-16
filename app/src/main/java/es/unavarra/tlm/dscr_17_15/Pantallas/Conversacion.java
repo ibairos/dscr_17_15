@@ -1,14 +1,16 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Pantallas;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
+import es.unavarra.tlm.dscr_17_15.Tools.EnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
+import es.unavarra.tlm.dscr_17_15.R;
 
 public class Conversacion extends AppCompatActivity {
 

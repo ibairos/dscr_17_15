@@ -1,4 +1,4 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.EventListeners;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,10 +7,10 @@ import android.widget.AdapterView;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
+import es.unavarra.tlm.dscr_17_15.Pantallas.Conversacion;
 
 /**
  * Created by ibai on 11/5/17.

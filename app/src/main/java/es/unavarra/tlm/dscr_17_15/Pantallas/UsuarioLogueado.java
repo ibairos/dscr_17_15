@@ -1,19 +1,18 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Pantallas;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import es.unavarra.tlm.dscr_17_15.Tools.CerrarSesion;
+import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
+import es.unavarra.tlm.dscr_17_15.Tools.InvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
+import es.unavarra.tlm.dscr_17_15.R;
 
 public class UsuarioLogueado extends AppCompatActivity {
 

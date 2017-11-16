@@ -1,7 +1,6 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,11 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
+import es.unavarra.tlm.dscr_17_15.Tools.BorrarConversacion;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
+import es.unavarra.tlm.dscr_17_15.R;
 
 /**
  * Created by ibai on 10/19/17.

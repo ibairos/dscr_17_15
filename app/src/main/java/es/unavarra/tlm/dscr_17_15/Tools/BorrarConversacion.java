@@ -1,8 +1,9 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Tools;
 
 import android.app.Activity;
 import android.view.View;
 
+import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 
 /**

@@ -1,10 +1,13 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Pantallas;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
+
+import es.unavarra.tlm.dscr_17_15.Tools.ComprobarRegistro;
+import es.unavarra.tlm.dscr_17_15.R;
 
 public class Registro extends AppCompatActivity {
 

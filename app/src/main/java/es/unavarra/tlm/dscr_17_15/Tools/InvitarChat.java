@@ -1,4 +1,4 @@
-package es.unavarra.tlm.dscr_17_15;
+package es.unavarra.tlm.dscr_17_15.Tools;
 
 import android.app.Activity;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosInvitarChat;
 
