@@ -22,6 +22,8 @@
     <string name="cerrarSesion">Cerrar sesión</string>
     <string name="borrarConversacion">Borrar conversación</string>
     <string name="title_activity_prueba">prueba</string>
+    <string name="cuadroBuscarChat">Find a chat</string>
+    <string name="BotonBuscarChat">FIND</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

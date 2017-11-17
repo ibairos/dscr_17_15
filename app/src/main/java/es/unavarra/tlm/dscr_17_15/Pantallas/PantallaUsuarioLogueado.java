@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+import es.unavarra.tlm.dscr_17_15.EventListeners.BuscarChat;
 import es.unavarra.tlm.dscr_17_15.EventListeners.CerrarSesion;
+import es.unavarra.tlm.dscr_17_15.EventListeners.EsconderLayoutBuscarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.EventListeners.InvitarChat;
@@ -36,11 +39,20 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         EditText cuadroInvite = (EditText)findViewById(R.id.CuadroInvitarChat);
         Button botonInvitarChat = (Button)findViewById(R.id.BotonInvitarChat);
         View botonCerrarSesion = findViewById(R.id.BotonCerrarSesion);
+        EditText cuadroBuscarChat = (EditText)findViewById(R.id.CuadroBuscarChat);
+        Button botonBuscarChat = (Button)findViewById(R.id.BotonBuscarChat);
+        android.support.design.widget.FloatingActionButton botonFlotanteBuscarChat = (android.support.design.widget.FloatingActionButton)findViewById(R.id.BotonFlotanteBuscarChat);
+        android.support.design.widget.FloatingActionButton botonFlotanteBuscarChatX = (android.support.design.widget.FloatingActionButton)findViewById(R.id.BotonFlotanteBuscarChatX);
+        LinearLayout layoutBuscarChat = (LinearLayout)findViewById(R.id.LayoutBuscarChat);
 
         clasePeticionesRest.ListChats(this);
 
         botonCerrarSesion.setOnClickListener(new CerrarSesion(this));
         botonInvitarChat.setOnClickListener(new InvitarChat(cuadroInvite, this));
+        botonBuscarChat.setOnClickListener(new BuscarChat(this, cuadroBuscarChat));
+        botonFlotanteBuscarChat.setOnClickListener(new EsconderLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, false));
+        botonFlotanteBuscarChatX.setOnClickListener(new EsconderLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, true));
+
 
     }
 
