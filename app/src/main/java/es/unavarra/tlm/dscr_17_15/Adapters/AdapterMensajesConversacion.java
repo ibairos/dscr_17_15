@@ -2,24 +2,19 @@ package es.unavarra.tlm.dscr_17_15.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
 import es.unavarra.tlm.dscr_17_15.R;
+
+
 
 import static android.graphics.Color.rgb;
 
@@ -57,26 +52,28 @@ public class AdapterMensajesConversacion extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         AuxMensaje auxMensaje;
-
-        if (view == null) {
-            view = inflater.inflate(R.layout.mensaje_conversacion_list_item, viewGroup, false);
-            auxMensaje = new AuxMensaje(view);
-            view.setTag(auxMensaje);
-        } else {
-            auxMensaje = (AuxMensaje) view.getTag();
-        }
-
         SharedPreferences settings = context.getSharedPreferences("Config", 0);
         String emailUsuario = settings.getString("email", "");
         Message message = getItem(i);
-        if (!message.getUser().getEmail().equals(emailUsuario)){
-            Log.d("etiqueta", "M:"+message.getUser().getEmail());
-            Log.d("etiqueta", "U:"+emailUsuario);
-            //((RelativeLayout)view).setHorizontalGravity(RelativeLayout.ALIGN_PARENT_LEFT);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ((RelativeLayout)(((LinearLayout)view).getChildAt(0))).getChildAt(0).getLayoutParams();
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            view.setBackgroundColor(rgb(255, 255, 230));
+
+        if (message.getUser().getEmail().equals(emailUsuario)){
+            if (view == null) {
+                view = inflater.inflate(R.layout.message_list_item_right, viewGroup, false);
+                auxMensaje = new AuxMensaje(view);
+                view.setTag(auxMensaje);
+            } else {
+                auxMensaje = (AuxMensaje) view.getTag();
+            }
+        }else{
+            if (view == null) {
+                view = inflater.inflate(R.layout.message_list_item_left, viewGroup, false);
+                auxMensaje = new AuxMensaje(view);
+                view.setTag(auxMensaje);
+            } else {
+                auxMensaje = (AuxMensaje) view.getTag();
+            }
         }
+
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("HH:mm");
 
