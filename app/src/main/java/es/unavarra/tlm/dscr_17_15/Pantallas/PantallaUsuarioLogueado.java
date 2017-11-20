@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         myList.clear();
-        //ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
+        ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
         EditText cuadroInvite = (EditText)findViewById(R.id.CuadroInvitarChat);
         Button botonInvitarChat = (Button)findViewById(R.id.BotonInvitarChat);
         View botonCerrarSesion = findViewById(R.id.BotonCerrarSesion);

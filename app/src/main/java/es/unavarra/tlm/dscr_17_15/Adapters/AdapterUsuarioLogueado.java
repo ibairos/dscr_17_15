@@ -1,6 +1,7 @@
 package es.unavarra.tlm.dscr_17_15.Adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.List;
 import es.unavarra.tlm.dscr_17_15.EventListeners.BorrarConversacion;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
+import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaInfoChat;
 import es.unavarra.tlm.dscr_17_15.R;
 
 /**
@@ -52,7 +54,7 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        AuxChat auxChat;
+        final AuxChat auxChat;
 
         if (view == null) {
             view = inflater.inflate(R.layout.chats_list_item, viewGroup, false);
@@ -65,7 +67,7 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
         }
 
 
-        Chat chat = getItem(i).getChat();
+        final Chat chat = getItem(i).getChat();
         Log.e("chat "+i, (new Gson()).toJson(chat));
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("MM-dd");
@@ -77,19 +79,28 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
         }
         auxChat.delete.setImageResource(R.drawable.trash);
         auxChat.delete.setOnClickListener(new BorrarConversacion(activity, chat));
+        auxChat.infoChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, PantallaInfoChat.class);
+                intent.putExtra("Chat", (new Gson()).toJson(chat));
+                activity.startActivity(intent);
+            }
+        });
 
         return view;
     }
 
     private class AuxChat {
         TextView mailChat, fechaChat, ultimoMensaje;
-        ImageView delete;
+        ImageView delete, infoChat;
 
         public AuxChat(View view) {
             mailChat = view.findViewById(R.id.MailInfoChat);
             fechaChat = view.findViewById(R.id.FechaInfoChat);
             ultimoMensaje = view.findViewById(R.id.UltimoMensaje);
             delete = view.findViewById(R.id.BotonBorrarConversacion);
+            infoChat = view.findViewById(R.id.BotonInfoChat);
         }
     }
 }
