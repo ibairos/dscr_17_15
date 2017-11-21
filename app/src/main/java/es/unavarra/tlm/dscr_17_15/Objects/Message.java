@@ -1,5 +1,8 @@
 package es.unavarra.tlm.dscr_17_15.Objects;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.util.Date;
 
 /**

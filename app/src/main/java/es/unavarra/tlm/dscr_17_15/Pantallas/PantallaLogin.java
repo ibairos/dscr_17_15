@@ -13,7 +13,7 @@ public class PantallaLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entrar);
+        setContentView(R.layout.activity_pantalla_login);
 
         findViewById(R.id.entrar).setOnClickListener(new ComprobarLogin((EditText)findViewById(R.id.textoEmailEntrar), (EditText)findViewById(R.id.textoContraseñaEntrar), this));
 

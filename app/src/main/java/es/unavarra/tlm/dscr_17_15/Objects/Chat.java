@@ -1,5 +1,8 @@
 package es.unavarra.tlm.dscr_17_15.Objects;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.util.Date;
 
 /**
@@ -8,7 +11,8 @@ import java.util.Date;
 
 public class Chat{
 
-    int id, participants;
+    int id;
+    int participants;
     Date created_at;
     User[] users;
 

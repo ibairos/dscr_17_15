@@ -3,7 +3,7 @@
     <string name="bienvenido">¡Bienvenido!</string>
     <string name="entrar">ENTRAR</string>
     <string name="registro">REGISTRO</string>
-    <string name="email">E-mail</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="repetirPaswword">Repite tu password</string>
     <string name="crearCuenta">CREAR CUENTA</string>
@@ -29,6 +29,13 @@
     <string name="participantes">Participantes</string>
     <string name="buscarEnChat">Busca un mensaje</string>
     <string name="cancelar">Cancelar</string>
+    <string name="miPerfil">My Profile</string>
+    <string name="update">Update</string>
+    <string name="modify">Modify</string>
+    <string name="cambiarPassword">Change password</string>
+    <string name="deleteAccount">Delete account</string>
+    <string name="name">Name</string>
+    <string name="profile">Profile</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -28,7 +28,7 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myList.clear();
-        setContentView(R.layout.activity_usuario_logueado);
+        setContentView(R.layout.activity_pantalla_usuario_logueado);
     }
 
     @Override

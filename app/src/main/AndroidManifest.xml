@@ -22,7 +22,10 @@
         <activity android:name=".Pantallas.PantallaLogin" />
         <activity android:name=".Pantallas.PantallaUsuarioLogueado" />
         <activity android:name=".Pantallas.PantallaConversacion" />
-        <activity android:name=".Pantallas.PantallaInfoChat"></activity>
+        <activity android:name=".Pantallas.PantallaInfoChat" />
+        <activity android:name=".Pantallas.PantallaMiPerfil" />
+        <activity android:name=".Pantallas.PantallaCambiarPassword" />
+        <activity android:name=".Pantallas.PantallaOtroPerfil"></activity>
     </application>
 
 </manifest>
