@@ -2,6 +2,7 @@ package es.unavarra.tlm.dscr_17_15.Pantallas;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,6 +25,8 @@ public class PantallaMiPerfil extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         User user = (new Gson()).fromJson(bundle.getString("User"), User.class);
+
+        //Log.d("USER", new Gson().toJson(user));
 
         ((TextView)findViewById(R.id.TextViewMiEmail)).setText(user.getEmail());
         ((TextView)findViewById(R.id.TextViewMiNombre)).setText(user.getName());

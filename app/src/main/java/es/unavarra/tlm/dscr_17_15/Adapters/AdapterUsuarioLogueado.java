@@ -2,6 +2,7 @@ package es.unavarra.tlm.dscr_17_15.Adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.util.List;
 import es.unavarra.tlm.dscr_17_15.EventListeners.BorrarConversacion;
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
+import es.unavarra.tlm.dscr_17_15.Objects.User;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaInfoChat;
 import es.unavarra.tlm.dscr_17_15.R;
 
@@ -72,7 +74,16 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("MM-dd");
 
-        auxChat.mailChat.setText(chat.getUsers()[0].getName());
+        SharedPreferences settings = activity.getSharedPreferences("Config", 0);
+        String miEmail = settings.getString("email", "");
+
+        String otroUsuario = "";
+        for (int x = 0; x < chat.getUsers().length; x++){
+            if (!chat.getUsers()[x].getEmail().equals(miEmail)){
+                otroUsuario = chat.getUsers()[x].getName();
+            }
+        }
+        auxChat.mailChat.setText(otroUsuario);
         auxChat.fechaChat.setText(formatoFecha.format(chat.getCreated_at()));
         if (getItem(i).getUltimoMensaje() != null){
             auxChat.ultimoMensaje.setText(getItem(i).getUltimoMensaje().getText());

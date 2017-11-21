@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import es.unavarra.tlm.dscr_17_15.EventListeners.BuscarChat;
 import es.unavarra.tlm.dscr_17_15.EventListeners.CerrarSesion;
+import es.unavarra.tlm.dscr_17_15.EventListeners.IrAMiPerfil;
 import es.unavarra.tlm.dscr_17_15.EventListeners.MostrarLayoutBuscarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
@@ -29,6 +30,8 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         myList.clear();
         setContentView(R.layout.activity_pantalla_usuario_logueado);
+        (findViewById(R.id.ImagenMiPerfil)).setOnClickListener(new IrAMiPerfil(this));
+
     }
 
     @Override

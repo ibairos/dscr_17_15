@@ -36,6 +36,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosInvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosLogin;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRegistro;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaCambiarPassword;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaCogerUsuario;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaEnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListChats;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListMensajes;
@@ -491,10 +492,10 @@ public class ClasePeticionesRest {
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
             Gson gson = new Gson();
-            User user = gson.fromJson(new String(responseBody), User.class);
+            DatosRespuestaCogerUsuario datosRespuestaCogerUsuario = gson.fromJson(new String(responseBody), DatosRespuestaCogerUsuario.class);
 
             Intent intent = new Intent(activity, PantallaMiPerfil.class);
-            intent.putExtra("User", gson.toJson(user));
+            intent.putExtra("User", gson.toJson(datosRespuestaCogerUsuario.getUser()));
             activity.startActivity(intent);
         }
 

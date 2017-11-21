@@ -56,7 +56,6 @@ public class PantallaConversacion extends AppCompatActivity {
         (findViewById(R.id.ImagenBuscarEnChat)).setOnClickListener(new MostrarLayoutBuscarEnChat(this, false));
         (findViewById(R.id.ImagenBuscarEnChat2)).setOnClickListener(new MostrarLayoutBuscarEnChat(this, true));
         (findViewById(R.id.BotonBuscarEnChat)).setOnClickListener(new BuscarEnChat(this, (EditText) findViewById(R.id.TextoBuscarEnChat)));
-        (findViewById(R.id.ImagenMiPerfil)).setOnClickListener(new IrAMiPerfil(this));
         (findViewById(R.id.LayoutOtroPerfil)).setOnClickListener(new IrAOtroPerfil(this, otroUsuario));
 
         (new ClasePeticionesRest()).ListMensajes(this, chat);
