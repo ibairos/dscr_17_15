@@ -28,7 +28,7 @@
             tools:targetApi="lollipop">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/ImagenPerfilConversacion"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:contentDescription=""
@@ -37,13 +37,55 @@
 
             <TextView
                 android:id="@+id/NombreConversacion"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="60dp"
                 android:layout_marginStart="60dp"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                tools:ignore="RelativeOverlap" />
+
+            <ImageView
+                android:id="@+id/ImagenBuscarEnChat"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/BotonBuscarChat"
+                app:srcCompat="@android:drawable/ic_search_category_default" />
+
+            <ImageView
+                android:id="@+id/ImagenBuscarEnChat2"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/cancelar"
+                android:visibility="gone"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/LayoutBuscarEnChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/TextoBuscarEnChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/buscarEnChat"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/BotonBuscarEnChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/BotonBuscarChat" />
+        </LinearLayout>
 
         <ListView
             android:id="@+id/ListViewConversacion"
@@ -72,7 +114,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/sugerenciaConversacion"
-            android:inputType="textPersonName" />
+            android:inputType="text" />
 
         <Button
             android:id="@+id/BotonEnviarMensaje"

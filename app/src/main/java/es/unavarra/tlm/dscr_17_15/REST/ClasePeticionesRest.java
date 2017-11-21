@@ -37,6 +37,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
 import es.unavarra.tlm.dscr_17_15.Objects.Error;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
+import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaConversacion;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaInicio;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
 import es.unavarra.tlm.dscr_17_15.R;
@@ -487,9 +488,9 @@ public class ClasePeticionesRest {
 
         ListView listaMensajes = activity.findViewById(R.id.ListViewConversacion);
 
-        List<Message> myList = datosRespuestaListMensajes.getMessages();
+        PantallaConversacion.messages = datosRespuestaListMensajes.getMessages();
 
-        AdapterMensajesConversacion adapterMensajesConversacion = new AdapterMensajesConversacion(activity.getApplicationContext(), myList);
+        AdapterMensajesConversacion adapterMensajesConversacion = new AdapterMensajesConversacion(activity.getApplicationContext(), PantallaConversacion.messages);
         listaMensajes.setAdapter(adapterMensajesConversacion);
         //listaMensajes.setOnItemClickListener(new ChatListClickListener(myList, activity));
         adapterMensajesConversacion.notifyDataSetChanged();

@@ -12,11 +12,10 @@ import java.util.ArrayList;
 
 import es.unavarra.tlm.dscr_17_15.EventListeners.BuscarChat;
 import es.unavarra.tlm.dscr_17_15.EventListeners.CerrarSesion;
-import es.unavarra.tlm.dscr_17_15.EventListeners.EsconderLayoutBuscarChat;
+import es.unavarra.tlm.dscr_17_15.EventListeners.MostrarLayoutBuscarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.EventListeners.InvitarChat;
-import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.R;
 
 public class PantallaUsuarioLogueado extends AppCompatActivity {
@@ -51,8 +50,8 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         botonCerrarSesion.setOnClickListener(new CerrarSesion(this));
         botonInvitarChat.setOnClickListener(new InvitarChat(cuadroInvite, this));
         botonBuscarChat.setOnClickListener(new BuscarChat(this, cuadroBuscarChat));
-        botonFlotanteBuscarChat.setOnClickListener(new EsconderLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, false));
-        botonFlotanteBuscarChatX.setOnClickListener(new EsconderLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, true));
+        botonFlotanteBuscarChat.setOnClickListener(new MostrarLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, false));
+        botonFlotanteBuscarChatX.setOnClickListener(new MostrarLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, true));
 
 
     }

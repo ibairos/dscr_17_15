@@ -27,6 +27,8 @@
     <string name="informacionDelChat">Información del chat</string>
     <string name="fechaCreado">Fecha de creación</string>
     <string name="participantes">Participantes</string>
+    <string name="buscarEnChat">Busca un mensaje</string>
+    <string name="cancelar">Cancelar</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -57,7 +57,5 @@ public class BuscarChat implements View.OnClickListener {
             adapterUsuarioLogueado.notifyDataSetChanged();
         }
 
-
-
     }
 }
