@@ -2,11 +2,10 @@ package es.unavarra.tlm.dscr_17_15.EventListeners;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import es.unavarra.tlm.dscr_17_15.Adapters.AdapterUsuarioLogueado;
+import es.unavarra.tlm.dscr_17_15.Adapters.AdapterChatList;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
 import es.unavarra.tlm.dscr_17_15.R;
 
@@ -38,10 +37,10 @@ public class MostrarLayoutBuscarChat implements View.OnClickListener {
             botonFlotanteBuscarChat.setVisibility(View.VISIBLE);
             botonFlotanteBuscarChatX.setVisibility(View.GONE);
             ListView listaChats = activity.findViewById(R.id.ListViewChats);
-            AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity, PantallaUsuarioLogueado.myList);
-            listaChats.setAdapter(adapterUsuarioLogueado);
+            AdapterChatList adapterChatList = new AdapterChatList(activity, PantallaUsuarioLogueado.myList);
+            listaChats.setAdapter(adapterChatList);
             listaChats.setOnItemClickListener(new ChatListClickListener(PantallaUsuarioLogueado.myList, activity));
-            adapterUsuarioLogueado.notifyDataSetChanged();
+            adapterChatList.notifyDataSetChanged();
         }else{
             layoutBuscarChat.setVisibility(View.VISIBLE);
             botonFlotanteBuscarChat.setVisibility(View.GONE);

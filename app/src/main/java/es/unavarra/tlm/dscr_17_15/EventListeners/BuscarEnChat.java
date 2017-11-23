@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.unavarra.tlm.dscr_17_15.Adapters.AdapterMensajesConversacion;
-import es.unavarra.tlm.dscr_17_15.Adapters.AdapterUsuarioLogueado;
-import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaConversacion;
-import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
 import es.unavarra.tlm.dscr_17_15.R;
 
 /**

@@ -27,13 +27,13 @@ import es.unavarra.tlm.dscr_17_15.R;
  * Created by ibai on 10/19/17.
  */
 
-public class AdapterUsuarioLogueado extends BaseAdapter {
+public class AdapterChatList extends BaseAdapter {
 
     List<InformacionListChat> chats;
     LayoutInflater inflater;
     Activity activity;
 
-    public AdapterUsuarioLogueado(Activity activity, List<InformacionListChat> chats) {
+    public AdapterChatList(Activity activity, List<InformacionListChat> chats) {
         this.chats = chats;
         this.activity = activity;
         inflater = LayoutInflater.from(this.activity);
@@ -98,12 +98,16 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
                 activity.startActivity(intent);
             }
         });
+        if (chats.get(i).getUnreadMessages() > 0){
+            auxChat.unseenMessages.setVisibility(View.VISIBLE);
+            auxChat.unseenMessages.setText(chats.get(i).getUnreadMessages()+"");
+        }
 
         return view;
     }
 
     private class AuxChat {
-        TextView mailChat, fechaChat, ultimoMensaje;
+        TextView mailChat, fechaChat, ultimoMensaje, unseenMessages;
         ImageView delete, infoChat;
 
         public AuxChat(View view) {
@@ -112,6 +116,7 @@ public class AdapterUsuarioLogueado extends BaseAdapter {
             ultimoMensaje = view.findViewById(R.id.UltimoMensaje);
             delete = view.findViewById(R.id.BotonBorrarConversacion);
             infoChat = view.findViewById(R.id.BotonInfoChat);
+            unseenMessages = view.findViewById(R.id.UnseenMessages);
         }
     }
 }

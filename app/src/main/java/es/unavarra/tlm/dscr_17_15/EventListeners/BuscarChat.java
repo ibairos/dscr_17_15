@@ -8,11 +8,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.unavarra.tlm.dscr_17_15.Adapters.AdapterUsuarioLogueado;
+import es.unavarra.tlm.dscr_17_15.Adapters.AdapterChatList;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
 import es.unavarra.tlm.dscr_17_15.R;
-import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 
 /**
  * Created by ibai on 11/16/17.
@@ -45,16 +44,16 @@ public class BuscarChat implements View.OnClickListener {
                 }
             }
 
-            AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity, auxChatList);
-            listaChats.setAdapter(adapterUsuarioLogueado);
+            AdapterChatList adapterChatList = new AdapterChatList(activity, auxChatList);
+            listaChats.setAdapter(adapterChatList);
             listaChats.setOnItemClickListener(new ChatListClickListener(auxChatList, activity));
-            adapterUsuarioLogueado.notifyDataSetChanged();
+            adapterChatList.notifyDataSetChanged();
 
         }else{
-            AdapterUsuarioLogueado adapterUsuarioLogueado = new AdapterUsuarioLogueado(activity, PantallaUsuarioLogueado.myList);
-            listaChats.setAdapter(adapterUsuarioLogueado);
+            AdapterChatList adapterChatList = new AdapterChatList(activity, PantallaUsuarioLogueado.myList);
+            listaChats.setAdapter(adapterChatList);
             listaChats.setOnItemClickListener(new ChatListClickListener(PantallaUsuarioLogueado.myList, activity));
-            adapterUsuarioLogueado.notifyDataSetChanged();
+            adapterChatList.notifyDataSetChanged();
         }
 
     }

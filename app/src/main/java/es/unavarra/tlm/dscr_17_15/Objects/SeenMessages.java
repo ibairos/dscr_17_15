@@ -12,14 +12,16 @@ import org.greenrobot.greendao.annotation.Generated;
 public class SeenMessages {
 
     @Id
-    int idChat;
+    long idChat;
 
     int seenMessages;
 
 
 
-    @Generated(hash = 1597454704)
-    public SeenMessages(int idChat, int seenMessages) {
+
+
+    @Generated(hash = 1679137564)
+    public SeenMessages(long idChat, int seenMessages) {
         this.idChat = idChat;
         this.seenMessages = seenMessages;
     }
@@ -30,12 +32,10 @@ public class SeenMessages {
 
 
 
-    public int getIdChat() {
-        return idChat;
-    }
 
-    public void setIdChat(int idChat) {
-        this.idChat = idChat;
+
+    public long getIdChat() {
+        return idChat;
     }
 
     public int getSeenMessages() {
@@ -44,6 +44,10 @@ public class SeenMessages {
 
     public void setSeenMessages(int seenMessages) {
         this.seenMessages = seenMessages;
+    }
+
+    public void setIdChat(long idChat) {
+        this.idChat = idChat;
     }
 
 }

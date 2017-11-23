@@ -57,21 +57,13 @@ public class AdapterMensajesConversacion extends BaseAdapter {
         Message message = getItem(i);
 
         if (message.getUser().getEmail().equals(emailUsuario)){
-            if (view == null) {
-                view = inflater.inflate(R.layout.message_list_item_right, viewGroup, false);
-                auxMensaje = new AuxMensaje(view);
-                view.setTag(auxMensaje);
-            } else {
-                auxMensaje = (AuxMensaje) view.getTag();
-            }
+            view = inflater.inflate(R.layout.message_list_item_right, viewGroup, false);
+            auxMensaje = new AuxMensaje(view);
+            //view.setTag(auxMensaje);
         }else{
-            if (view == null) {
-                view = inflater.inflate(R.layout.message_list_item_left, viewGroup, false);
-                auxMensaje = new AuxMensaje(view);
-                view.setTag(auxMensaje);
-            } else {
-                auxMensaje = (AuxMensaje) view.getTag();
-            }
+            view = inflater.inflate(R.layout.message_list_item_left, viewGroup, false);
+            auxMensaje = new AuxMensaje(view);
+            //view.setTag(auxMensaje);
         }
 
 

@@ -1,5 +1,6 @@
 package es.unavarra.tlm.dscr_17_15.Pantallas;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,14 +32,18 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         myList.clear();
         setContentView(R.layout.activity_pantalla_usuario_logueado);
         (findViewById(R.id.ImagenMiPerfil)).setOnClickListener(new IrAMiPerfil(this));
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (ClasePeticionesRest.tokenExpirado(this) || !ClasePeticionesRest.sesionAbierta(this)){
+            ClasePeticionesRest.borrarSharedPreferences(this);
+            Intent intent = new Intent(this, PantallaInicio.class);
+            startActivity(intent);
+        }
         myList.clear();
-        ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
+        //ListView listaDeChats = (ListView)findViewById(R.id.ListViewChats);
         EditText cuadroInvite = (EditText)findViewById(R.id.CuadroInvitarChat);
         Button botonInvitarChat = (Button)findViewById(R.id.BotonInvitarChat);
         View botonCerrarSesion = findViewById(R.id.BotonCerrarSesion);

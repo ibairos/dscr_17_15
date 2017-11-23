@@ -8,10 +8,20 @@ public class InformacionListChat {
 
     Chat chat;
     Message ultimoMensaje;
+    int unreadMessages;
 
-    public InformacionListChat(Chat chat, Message ultimoMensaje) {
+    public InformacionListChat(Chat chat, Message ultimoMensaje, int unreadMessages) {
         this.chat = chat;
         this.ultimoMensaje = ultimoMensaje;
+        this.unreadMessages = unreadMessages;
+    }
+
+    public int getUnreadMessages() {
+        return unreadMessages;
+    }
+
+    public void setUnreadMessages(int unreadMessages) {
+        this.unreadMessages = unreadMessages;
     }
 
     public Chat getChat() {

@@ -11,6 +11,11 @@ public class DatosRespuestaListMensajes {
     int count;
     List<Message> messages;
 
+    public DatosRespuestaListMensajes(int count, List<Message> messages) {
+        this.count = count;
+        this.messages = messages;
+    }
+
     public int getCount() {
         return count;
     }

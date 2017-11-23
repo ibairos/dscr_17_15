@@ -27,5 +27,6 @@ public class InvitarChat implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         (new ClasePeticionesRest()).InvitarChat(new DatosInvitarChat(cuadroInvite.getText().toString()), activity);
+        cuadroInvite.setText("");
     }
 }

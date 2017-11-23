@@ -53,10 +53,24 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="8dp">
 
+            <TextView
+                android:id="@+id/UnseenMessages"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="60dp"
+                android:background="@drawable/green_circle"
+                android:paddingTop="4dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/BotonInfoChat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="30dp"
                 android:contentDescription="@string/informacionDelChat"
