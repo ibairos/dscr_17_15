@@ -67,7 +67,11 @@ public class ClasePeticionesRest {
 
         Gson gson = new Gson();
 
-        client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/register", new StringEntity(gson.toJson(datosRegistro), "UTF-8"), "application/json", new RespuestaRegistro(activity));
+        try {
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/register", new StringEntity(gson.toJson(datosRegistro)), "application/json", new RespuestaRegistro(activity));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -104,7 +108,11 @@ public class ClasePeticionesRest {
 
         Gson gson = new Gson();
 
-        client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/login", new StringEntity(gson.toJson(datosLogin), "UTF-8"), "application/json", new RespuestaLogin(activity));
+        try {
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/login", new StringEntity(gson.toJson(datosLogin)), "application/json", new RespuestaLogin(activity));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -144,7 +152,11 @@ public class ClasePeticionesRest {
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
         client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/invite", new StringEntity(gson.toJson(datosInvitarChat), "UTF-8"), "application/json", new RespuestaInvitarChat(activity));
+        try {
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/invite", new StringEntity(gson.toJson(datosInvitarChat)), "application/json", new RespuestaInvitarChat(activity));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -193,6 +205,8 @@ public class ClasePeticionesRest {
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            //Log.d("etiqueta", new String(responseBody));
 
             Gson gson = new Gson();
             DatosRespuestaListChats datosRespuestaListChats = gson.fromJson(new String(responseBody), DatosRespuestaListChats.class);
@@ -536,7 +550,11 @@ public class ClasePeticionesRest {
         Gson gson = new Gson();
 
         client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me", new StringEntity(gson.toJson(datosCambiarNombre), "UTF-8"), "application/json", new RespuestaCambiarNombre(activity));
+        try {
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me", new StringEntity(gson.toJson(datosCambiarNombre)), "application/json", new RespuestaCambiarNombre(activity));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -615,7 +633,11 @@ public class ClasePeticionesRest {
         Gson gson = new Gson();
 
         client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me/password", new StringEntity(gson.toJson(datosCambiarPassword), "UTF-8"), "application/json", new RespuestaCambiarPassword(activity));
+        try {
+            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me/password", new StringEntity(gson.toJson(datosCambiarPassword)), "application/json", new RespuestaCambiarPassword(activity));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
     }
 

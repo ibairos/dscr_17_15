@@ -28,4 +28,12 @@
         <activity android:name=".Pantallas.PantallaOtroPerfil"></activity>
     </application>
 
+    <service
+        android:name=".service.HandleNotificationsService">
+        <intent-filter>
+            <action
+                android:name="com.google.firebase.MESSAGING_EVENT"/>
+        </intent-filter>
+    </service>
+
 </manifest>

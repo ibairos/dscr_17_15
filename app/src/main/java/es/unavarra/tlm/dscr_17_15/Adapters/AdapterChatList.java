@@ -62,12 +62,9 @@ public class AdapterChatList extends BaseAdapter {
             view = inflater.inflate(R.layout.chats_list_item, viewGroup, false);
             auxChat = new AuxChat(view);
             view.setTag(auxChat);
-            Log.e("IT", "1");
         } else {
-            Log.e("IT", "2");
             auxChat = (AuxChat) view.getTag();
         }
-
 
         final Chat chat = getItem(i).getChat();
         Log.e("chat "+i, (new Gson()).toJson(chat));
