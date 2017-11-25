@@ -30,7 +30,7 @@ public class EnviarMensaje implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         String mensaje = new String(textoMensaje.getText().toString());
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("Y-M-d H:m:s");
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
         (new ClasePeticionesRest()).EnviarMensaje(activity, new DatosEnviarMensaje(mensaje, formatoFecha.format(Calendar.getInstance().getTime())), chat);
         textoMensaje.setText("");
     }

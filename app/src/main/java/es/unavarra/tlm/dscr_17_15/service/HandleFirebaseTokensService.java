@@ -1,6 +1,7 @@
 package es.unavarra.tlm.dscr_17_15.service;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -25,6 +26,8 @@ public class HandleFirebaseTokensService extends FirebaseInstanceIdService {
         editor.putString("firebase_token", token);
 
         editor.commit();
+
+        Log.e("etiqueta", "TOKEN_GOOGLE: "+token);
 
     }
 }

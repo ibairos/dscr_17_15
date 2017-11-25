@@ -717,6 +717,9 @@ public class ClasePeticionesRest {
         //listaMensajes.setOnItemClickListener(new ChatListClickListener(myList, activity));
         adapterMensajesConversacion.notifyDataSetChanged();
 
+        //listaMensajes.smoothScrollToPosition(PantallaConversacion.messages.size()-1);
+        listaMensajes.setSelection(PantallaConversacion.messages.size()-1);
+
         PantallaConversacion.mensajesVistos(activity, idChat);
 
     }
