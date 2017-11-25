@@ -255,7 +255,8 @@ public class ClasePeticionesRest {
             Gson gson = new Gson();
             DatosRespuestaEnviarMensaje datosRespuestaEnviarMensaje = gson.fromJson(new String(responseBody), DatosRespuestaEnviarMensaje.class);
 
-            dibujarMensajes(activity, new DatosRespuestaListMensajes(datosRespuestaEnviarMensaje.getMessages().size(), datosRespuestaEnviarMensaje.getMessages()), chat.getId());
+            //dibujarMensajes(activity, new DatosRespuestaListMensajes(datosRespuestaEnviarMensaje.getMessages().size(), datosRespuestaEnviarMensaje.getMessages()), chat.getId());
+            ListMensajes(activity, chat);
 
         }
 

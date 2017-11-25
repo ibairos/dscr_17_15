@@ -1,5 +1,6 @@
 package es.unavarra.tlm.dscr_17_15.service;
 
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -17,6 +18,7 @@ public class HandleNotificationsService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         Toast.makeText(getApplicationContext(), (new Gson()).toJson(remoteMessage), Toast.LENGTH_LONG);
+        startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
 
     }
 }

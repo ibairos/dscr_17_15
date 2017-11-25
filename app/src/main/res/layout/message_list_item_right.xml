@@ -8,7 +8,6 @@
     android:gravity="top|start"
     android:hapticFeedbackEnabled="false"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:ignore="RtlHardcoded">
 
 
@@ -17,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:background="@drawable/green"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/TextoMensaje"
