@@ -37,6 +37,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosEnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosInvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosLogin;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRegistro;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaCambiarNombre;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaCogerUsuario;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaEnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaListChats;
@@ -571,9 +572,9 @@ public class ClasePeticionesRest {
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
             Gson gson = new Gson();
-            User user = gson.fromJson(new String(responseBody), User.class);
+            DatosRespuestaCambiarNombre datosRespuestaCambiarNombre = gson.fromJson(new String(responseBody), DatosRespuestaCambiarNombre.class);
 
-            actualizarPerfil(activity, user);
+            actualizarPerfil(activity, datosRespuestaCambiarNombre.getUser());
 
         }
 

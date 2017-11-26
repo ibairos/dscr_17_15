@@ -2,8 +2,10 @@ package es.unavarra.tlm.dscr_17_15.service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -28,11 +30,12 @@ public class HandleNotificationsService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         Toast.makeText(getApplicationContext(), (new Gson()).toJson(remoteMessage), Toast.LENGTH_LONG);
-        Log.e("PUSH", (new Gson()).toJson(remoteMessage));
+        Log.e("PUSH", "MENSAJE: "+(new Gson()).toJson(remoteMessage));
         //startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
         sendNotification(remoteMessage.getNotification().getBody());
 
     }
+
 
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, PantallaInicio.class);

@@ -13,9 +13,17 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 public class HandleFirebaseTokensService extends FirebaseInstanceIdService {
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.e("etiqueta", "CREADO FIIS");
+    }
+
+    @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String token = FirebaseInstanceId.getInstance().getToken();
+
+        //sendRegistrationToServer(token);
         guardarFirebaseToken(token);
     }
 
