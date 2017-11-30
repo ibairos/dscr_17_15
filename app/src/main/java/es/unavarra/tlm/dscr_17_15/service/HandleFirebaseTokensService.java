@@ -6,6 +6,9 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import es.unavarra.tlm.dscr_17_15.Objects.DatosEnviarFirebaseToken;
+import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
+
 /**
  * Created by ibai on 11/23/17.
  */
@@ -13,18 +16,12 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 public class HandleFirebaseTokensService extends FirebaseInstanceIdService {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.e("etiqueta", "CREADO FIIS");
-    }
-
-    @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String token = FirebaseInstanceId.getInstance().getToken();
 
-        //sendRegistrationToServer(token);
         guardarFirebaseToken(token);
+        (new ClasePeticionesRest()).enviarFirebaseToken(this, new DatosEnviarFirebaseToken(token));
     }
 
     public void guardarFirebaseToken(String token){
@@ -35,7 +32,7 @@ public class HandleFirebaseTokensService extends FirebaseInstanceIdService {
 
         editor.commit();
 
-        Log.e("etiqueta", "TOKEN_GOOGLE: "+token);
+        Log.e("PUSH", "****TOKEN_GOOGLE****: "+token);
 
     }
 }

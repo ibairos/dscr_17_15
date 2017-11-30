@@ -26,8 +26,8 @@ public class PantallaInicio extends AppCompatActivity {
         findViewById(R.id.botonEntrar).setOnClickListener(new ManejadorOnClick(this, PantallaLogin.class));
 
         SharedPreferences settings = getSharedPreferences("Config", 0);
-        //Log.e("etiqueta", "1- "+settings.getString("firebase_token", "EMPTY"));
-        Log.e("etiqueta", "2- "+FirebaseInstanceId.getInstance().getToken());
+        Log.e("PUSH", "1- " + settings.getString("firebase_token", "EMPTY"));
+        //Log.e("etiqueta", "2- "+FirebaseInstanceId.getInstance().getToken());
 
         if (ClasePeticionesRest.sesionAbierta(this)) {
             if (ClasePeticionesRest.tokenExpirado(this)) {

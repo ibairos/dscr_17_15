@@ -1,8 +1,10 @@
 package es.unavarra.tlm.dscr_17_15.Pantallas;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,8 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         myList.clear();
         setContentView(R.layout.activity_pantalla_usuario_logueado);
         (findViewById(R.id.ImagenMiPerfil)).setOnClickListener(new IrAMiPerfil(this));
+        SharedPreferences settings = getSharedPreferences("Config", 0);
+        Log.e("PUSH", "2- " + settings.getString("firebase_token", "EMPTY"));
     }
 
     @Override

@@ -67,7 +67,6 @@ public class AdapterChatList extends BaseAdapter {
         }
 
         final Chat chat = getItem(i).getChat();
-        Log.e("chat "+i, (new Gson()).toJson(chat));
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("MM-dd");
 

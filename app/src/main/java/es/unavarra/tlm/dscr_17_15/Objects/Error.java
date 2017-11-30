@@ -6,21 +6,21 @@ package es.unavarra.tlm.dscr_17_15.Objects;
 
 public class Error {
 
-    String message;
+    String description;
 
     public Error(){
 
     }
 
-    public Error(String message) {
-        this.message = message;
+    public Error(String description) {
+        this.description = description;
     }
 
     public String getMessage() {
-        return message;
+        return description;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessage(String description) {
+        this.description = description;
     }
 }

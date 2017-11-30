@@ -1,11 +1,17 @@
 package es.unavarra.tlm.dscr_17_15.REST;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,9 +19,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.SyncHttpClient;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -33,6 +41,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DaoMaster;
 import es.unavarra.tlm.dscr_17_15.Objects.DaoSession;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosCambiarNombre;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosCambiarPassword;
+import es.unavarra.tlm.dscr_17_15.Objects.DatosEnviarFirebaseToken;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosEnviarMensaje;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosInvitarChat;
 import es.unavarra.tlm.dscr_17_15.Objects.DatosLogin;
@@ -46,6 +55,7 @@ import es.unavarra.tlm.dscr_17_15.Objects.DatosRespuestaRegistro;
 import es.unavarra.tlm.dscr_17_15.Objects.Error;
 import es.unavarra.tlm.dscr_17_15.Objects.InformacionListChat;
 import es.unavarra.tlm.dscr_17_15.Objects.Message;
+import es.unavarra.tlm.dscr_17_15.Objects.PushMessage;
 import es.unavarra.tlm.dscr_17_15.Objects.SeenMessages;
 import es.unavarra.tlm.dscr_17_15.Objects.SeenMessagesDao;
 import es.unavarra.tlm.dscr_17_15.Objects.User;
@@ -55,6 +65,7 @@ import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaMiPerfil;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaOtroPerfil;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
 import es.unavarra.tlm.dscr_17_15.R;
+import es.unavarra.tlm.dscr_17_15.service.HandleNotificationsService;
 
 /**
  * Created by dscr25 on 26/10/17.
@@ -62,14 +73,16 @@ import es.unavarra.tlm.dscr_17_15.R;
 
 public class ClasePeticionesRest {
 
-    public AsyncHttpClient client = new AsyncHttpClient();
+    public AsyncHttpClient asyncClient = new AsyncHttpClient();
+    public SyncHttpClient syncClient = new SyncHttpClient();
+
 
     public void RegistrarUsuario(DatosRegistro datosRegistro, Activity activity){
 
         Gson gson = new Gson();
 
         try {
-            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/register", new StringEntity(gson.toJson(datosRegistro)), "application/json", new RespuestaRegistro(activity));
+            asyncClient.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/register", new StringEntity(gson.toJson(datosRegistro)), "application/json", new RespuestaRegistro(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -110,7 +123,7 @@ public class ClasePeticionesRest {
         Gson gson = new Gson();
 
         try {
-            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/login", new StringEntity(gson.toJson(datosLogin)), "application/json", new RespuestaLogin(activity));
+            asyncClient.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/login", new StringEntity(gson.toJson(datosLogin)), "application/json", new RespuestaLogin(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -152,9 +165,9 @@ public class ClasePeticionesRest {
         Gson gson = new Gson();
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
         try {
-            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/invite", new StringEntity(gson.toJson(datosInvitarChat)), "application/json", new RespuestaInvitarChat(activity));
+            asyncClient.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/invite", new StringEntity(gson.toJson(datosInvitarChat)), "application/json", new RespuestaInvitarChat(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -191,8 +204,8 @@ public class ClasePeticionesRest {
 
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chats", new RespuestaListChats(activity));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chats", new RespuestaListChats(activity));
 
     }
 
@@ -206,8 +219,6 @@ public class ClasePeticionesRest {
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-            //Log.d("etiqueta", new String(responseBody));
 
             Gson gson = new Gson();
             DatosRespuestaListChats datosRespuestaListChats = gson.fromJson(new String(responseBody), DatosRespuestaListChats.class);
@@ -235,8 +246,8 @@ public class ClasePeticionesRest {
         Gson gson = new Gson();
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/message", new StringEntity(gson.toJson(datosEnviarMensaje), "UTF-8"), "application/json", new RespuestaEnviarMensaje(activity, chat));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/message", new StringEntity(gson.toJson(datosEnviarMensaje), "UTF-8"), "application/json", new RespuestaEnviarMensaje(activity, chat));
 
     }
 
@@ -279,8 +290,8 @@ public class ClasePeticionesRest {
 
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/messages", new RespuestaListMensajes(activity, chat.getId()));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/messages", new RespuestaListMensajes(activity, chat.getId()));
 
     }
 
@@ -321,8 +332,8 @@ public class ClasePeticionesRest {
 
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/exit", new RespuestaBorrarConversacion(activity));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/exit", new RespuestaBorrarConversacion(activity));
 
     }
 
@@ -366,8 +377,8 @@ public class ClasePeticionesRest {
 
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/logout", new RespuestaCerrarSesion(activity));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/auth/logout", new RespuestaCerrarSesion(activity));
 
     }
 
@@ -417,8 +428,8 @@ public class ClasePeticionesRest {
         String token = settings.getString("token", "");
 
         for (int x = 0; x < datosRespuestaListChats.getCount(); x++) {
-            client.addHeader("X-AUTH-TOKEN", token);
-            client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/" + datosRespuestaListChats.getChats().get(x).getId() + "/messages", new RespuestaCogerUltimosMensajes(activity, datosRespuestaListChats.getChats().get(x)));
+            asyncClient.addHeader("X-AUTH-TOKEN", token);
+            asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/" + datosRespuestaListChats.getChats().get(x).getId() + "/messages", new RespuestaCogerUltimosMensajes(activity, datosRespuestaListChats.getChats().get(x)));
         }
 
         //dibujarChats(datosRespuestaListChats, activity);
@@ -469,8 +480,8 @@ public class ClasePeticionesRest {
     public void cogerUsuario(Activity activity){
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me", new RespuestaCogerUsuario(activity));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me", new RespuestaCogerUsuario(activity));
 
     }
 
@@ -509,8 +520,8 @@ public class ClasePeticionesRest {
     public void cogerOtroUsuario(Activity activity, User user){
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/"+user.getId(), new RespuestaCogerOtroUsuario(activity));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/"+user.getId(), new RespuestaCogerOtroUsuario(activity));
 
     }
 
@@ -551,9 +562,9 @@ public class ClasePeticionesRest {
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
         Gson gson = new Gson();
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
         try {
-            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me", new StringEntity(gson.toJson(datosCambiarNombre)), "application/json", new RespuestaCambiarNombre(activity));
+            asyncClient.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me", new StringEntity(gson.toJson(datosCambiarNombre)), "application/json", new RespuestaCambiarNombre(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -594,8 +605,8 @@ public class ClasePeticionesRest {
     public void eliminarUsuario(Activity activity){
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
-        client.delete(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile", new RespuestaEliminarUsuario(activity));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.delete(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile", new RespuestaEliminarUsuario(activity));
     }
 
     public class RespuestaEliminarUsuario extends AsyncHttpResponseHandler{
@@ -634,9 +645,9 @@ public class ClasePeticionesRest {
         SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
         Gson gson = new Gson();
 
-        client.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
         try {
-            client.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me/password", new StringEntity(gson.toJson(datosCambiarPassword)), "application/json", new RespuestaCambiarPassword(activity));
+            asyncClient.post(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/profile/me/password", new StringEntity(gson.toJson(datosCambiarPassword)), "application/json", new RespuestaCambiarPassword(activity));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -675,6 +686,105 @@ public class ClasePeticionesRest {
         }
     }
 
+    public void enviarFirebaseToken(Context context, DatosEnviarFirebaseToken datosEnviarFirebaseToken){
+
+        SharedPreferences settings = context.getSharedPreferences("Config", 0);
+        Gson gson = new Gson();
+        String token = settings.getString("token", "");
+
+        if (!token.equals("")) {
+            syncClient.addHeader("X-AUTH-TOKEN", token);
+            try {
+                syncClient.post(context, "https://api.messenger.tatai.es/v2/notification/token", new StringEntity(gson.toJson(datosEnviarFirebaseToken)), "application/json", new RespuestaEnviarFirebaseToken(context));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public class RespuestaEnviarFirebaseToken extends AsyncHttpResponseHandler{
+
+        Context context;
+
+        public RespuestaEnviarFirebaseToken(Context context){
+            this.context = context;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            toastLargo(context, "TOKEN REFRESHED");
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            if (statusCode == 403){
+                toastLargo(context, "Sesion expirada");
+                borrarSharedPreferences(context);
+                //CerrarSesion(context);
+            }
+            Log.e("PUSH", "RB: " + new String(responseBody));
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(context, mensajeError.getMessage());
+        }
+    }
+
+    public void cogerInfoChat(Service service, PushMessage pushMessage){
+
+        SharedPreferences settings = service.getApplicationContext().getSharedPreferences("Config", 0);
+        String token = settings.getString("token", "");
+
+        if (!(token.equals("") || tokenExpirado(service))) {
+            syncClient.addHeader("X-AUTH-TOKEN", token);
+            syncClient.get(service, "https://api.messenger.tatai.es/v2/chats", new RespuestaCogerInfoChat(service, pushMessage));
+        }
+
+    }
+
+    public class RespuestaCogerInfoChat extends AsyncHttpResponseHandler{
+
+        Service service;
+        PushMessage pushMessage;
+
+        public RespuestaCogerInfoChat(Service service, PushMessage pushMessage){
+            this.service = service;
+            this.pushMessage = pushMessage;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            Gson gson = new Gson();
+            DatosRespuestaListChats datosRespuestaListChats = gson.fromJson(new String(responseBody), DatosRespuestaListChats.class);
+            Chat chat = null;
+            for (int x = 0; x < datosRespuestaListChats.getChats().size(); x++){
+                if (datosRespuestaListChats.getChats().get(x).getId() == Integer.parseInt(pushMessage.getChat())){
+                    chat = datosRespuestaListChats.getChats().get(x);
+                    break;
+                }
+            }
+            sendNotification(pushMessage, chat, service);
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            if (statusCode == 403){
+                toastLargo(service, "Sesion expirada");
+                borrarSharedPreferences(service);
+                //CerrarSesion(context);
+            }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(service, mensajeError.getMessage());
+        }
+    }
+
+
+
 
 
 
@@ -682,13 +792,17 @@ public class ClasePeticionesRest {
 
         SharedPreferences settings = context.getSharedPreferences("Config", 0);
         SharedPreferences.Editor editor = settings.edit();
+        String token = FirebaseInstanceId.getInstance().getToken();
+
+        editor.putString("firebase_token", token);
+        editor.putString("token", datosRespuestaRegistro.getSession().getToken());
         editor.putInt("id", datosRespuestaRegistro.getUser().getId());
         editor.putString("name", datosRespuestaRegistro.getUser().getName());
         editor.putString("email", datosRespuestaRegistro.getUser().getEmail());
-        editor.putString("token", datosRespuestaRegistro.getSession().getToken());
         editor.putBoolean("sesion", true);
         editor.putLong("valid_until", datosRespuestaRegistro.getSession().getValid_until().getTime());
         editor.commit();
+        enviarFirebaseToken(context, new DatosEnviarFirebaseToken(token));
 
     }
 
@@ -761,22 +875,29 @@ public class ClasePeticionesRest {
         ArrayList<InformacionListChat> lista = new ArrayList();
         boolean z;
 
-        if (PantallaUsuarioLogueado.myList.size() != 0) {
-            lista.add(PantallaUsuarioLogueado.myList.get(0));
-            for (int x = 1; x < PantallaUsuarioLogueado.myList.size(); x++) {
-                z = false;
+        lista.add(PantallaUsuarioLogueado.myList.get(0));
+        for (int x = 1; x < PantallaUsuarioLogueado.myList.size(); x++) {
+            z = false;
+            if (PantallaUsuarioLogueado.myList.get(x).getUltimoMensaje() != null) {
                 for (int y = 0; y < lista.size(); y++) {
-                    if (PantallaUsuarioLogueado.myList.get(x).getUltimoMensaje().getReceived_at().after(lista.get(y).getUltimoMensaje().getReceived_at())) {
+                    if (lista.get(y).getUltimoMensaje() != null) {
+                        if (PantallaUsuarioLogueado.myList.get(x).getUltimoMensaje().getReceived_at().after(lista.get(y).getUltimoMensaje().getReceived_at())) {
+                            lista.add(y, PantallaUsuarioLogueado.myList.get(x));
+                            z = true;
+                            break;
+                        }
+                    }else{
                         lista.add(y, PantallaUsuarioLogueado.myList.get(x));
                         z = true;
                         break;
                     }
                 }
-                if (z == false){
-                    lista.add(PantallaUsuarioLogueado.myList.get(x));
-                }
+            }
+            if (z == false){
+                lista.add(PantallaUsuarioLogueado.myList.get(x));
             }
         }
+
         PantallaUsuarioLogueado.myList.clear();
         PantallaUsuarioLogueado.myList = lista;
 
@@ -785,14 +906,38 @@ public class ClasePeticionesRest {
     public static void borrarSharedPreferences(Context context){
         SharedPreferences settings = context.getSharedPreferences("Config", 0);
         SharedPreferences.Editor editor = settings.edit();
+        String token_google = settings.getString("firebase_token", "");
         editor.clear();
+        editor.putString("firebase_token", token_google);
         editor.putBoolean("sesion", false);
         editor.commit();
     }
 
-    public static boolean tokenExpirado(Activity activity){
+    public void sendNotification(PushMessage message, Chat chat, Service service) {
+        Intent intent = new Intent(service, PantallaConversacion.class);
+        intent.putExtra("chat", new Gson().toJson(chat));
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
-        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(service)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(message.getSender())
+                .setContentText(message.getMessage())
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    public static boolean tokenExpirado(Context context){
+
+        SharedPreferences settings = context.getSharedPreferences("Config", 0);
 
         Date now = Calendar.getInstance().getTime();
         long valid_until_long = settings.getLong("valid_until", 0);
@@ -813,12 +958,12 @@ public class ClasePeticionesRest {
 
     }
 
-    public static void toastCorto(Activity activity, String text){
-        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+    public static void toastCorto(Context context, String text){
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
-    public static void toastLargo(Activity activity, String text){
-        Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+    public static void toastLargo(Context context, String text){
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 
     public static void mostrarSnackbar(View view, String texto){
