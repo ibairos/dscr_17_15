@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -65,7 +66,6 @@ import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaMiPerfil;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaOtroPerfil;
 import es.unavarra.tlm.dscr_17_15.Pantallas.PantallaUsuarioLogueado;
 import es.unavarra.tlm.dscr_17_15.R;
-import es.unavarra.tlm.dscr_17_15.service.HandleNotificationsService;
 
 /**
  * Created by dscr25 on 26/10/17.
@@ -241,6 +241,47 @@ public class ClasePeticionesRest {
         }
     }
 
+    public void ListChatsSync(Activity activity){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+
+        syncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        syncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chats", new RespuestaListChatsSync(activity));
+
+    }
+
+    public class RespuestaListChatsSync extends AsyncHttpResponseHandler{
+
+        Activity activity;
+
+        public RespuestaListChatsSync(Activity activity){
+            this.activity = activity;
+        }
+
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            Gson gson = new Gson();
+            DatosRespuestaListChats datosRespuestaListChats = gson.fromJson(new String(responseBody), DatosRespuestaListChats.class);
+
+            PantallaUsuarioLogueado.myList.clear();
+            cogerUltimosMensajesSync(activity, datosRespuestaListChats);
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            if (statusCode == 403){
+                toastLargo(activity, "Sesion expirada");
+                CerrarSesion(activity);
+            }
+            Gson gson = new Gson();
+            Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
+
+            toastCorto(activity, mensajeError.getMessage());
+        }
+    }
+
     public void EnviarMensaje(Activity activity, DatosEnviarMensaje datosEnviarMensaje, Chat chat){
 
         Gson gson = new Gson();
@@ -278,7 +319,6 @@ public class ClasePeticionesRest {
                 toastLargo(activity, "Sesion expirada");
                 CerrarSesion(activity);
             }
-            Log.d("etiqueta", "ERROR: " + new String(responseBody));
             Gson gson = new Gson();
             Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
 
@@ -292,6 +332,15 @@ public class ClasePeticionesRest {
 
         asyncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
         asyncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/messages", new RespuestaListMensajes(activity, chat.getId()));
+
+    }
+
+    public void ListMensajesSync(Activity activity, Chat chat){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+
+        syncClient.addHeader("X-AUTH-TOKEN", settings.getString("token", ""));
+        syncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/"+chat.getId()+"/messages", new RespuestaListMensajes(activity, chat.getId()));
 
     }
 
@@ -309,9 +358,14 @@ public class ClasePeticionesRest {
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
             Gson gson = new Gson();
-            DatosRespuestaListMensajes datosRespuestaListMensajes = gson.fromJson(new String(responseBody), DatosRespuestaListMensajes.class);
+            final DatosRespuestaListMensajes datosRespuestaListMensajes = gson.fromJson(new String(responseBody), DatosRespuestaListMensajes.class);
 
-            dibujarMensajes(activity, datosRespuestaListMensajes, chatId);
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dibujarMensajes(activity, datosRespuestaListMensajes, chatId);
+                }
+            });
 
         }
 
@@ -353,9 +407,7 @@ public class ClasePeticionesRest {
             if (response.equals("[]")){
                 ListChats(activity);
             }else{
-                for (int x = 0; x < headers.length; x++) {
-                    android.util.Log.e("HEADER " + x, headers[x] + "");
-                }
+                toastCorto(activity, "Error al borrar la conversación");
             }
 
         }
@@ -401,9 +453,6 @@ public class ClasePeticionesRest {
                 activity.startActivity(intent);
                 activity.finish();
             }else{
-                for (int x = 0; x < headers.length; x++) {
-                    android.util.Log.e("HEADER " + x, headers[x] + "");
-                }
                 toastCorto(activity, "Error al cerrar la sesión");
             }
 
@@ -435,6 +484,18 @@ public class ClasePeticionesRest {
         //dibujarChats(datosRespuestaListChats, activity);
     }
 
+    public void cogerUltimosMensajesSync(Activity activity, DatosRespuestaListChats datosRespuestaListChats){
+
+        SharedPreferences settings = activity.getApplicationContext().getSharedPreferences("Config", 0);
+        String token = settings.getString("token", "");
+
+        for (int x = 0; x < datosRespuestaListChats.getCount(); x++) {
+            syncClient.addHeader("X-AUTH-TOKEN", token);
+            syncClient.get(activity.getApplicationContext(), "https://api.messenger.tatai.es/v2/chat/" + datosRespuestaListChats.getChats().get(x).getId() + "/messages", new RespuestaCogerUltimosMensajes(activity, datosRespuestaListChats.getChats().get(x)));
+        }
+
+    }
+
     public class RespuestaCogerUltimosMensajes extends AsyncHttpResponseHandler{
 
         Activity activity;
@@ -451,16 +512,20 @@ public class ClasePeticionesRest {
             Gson gson = new Gson();
             DatosRespuestaListMensajes datosRespuestaListMensajes = gson.fromJson(new String(responseBody), DatosRespuestaListMensajes.class);
 
-            Message ultimoMensaje;
+            final Message ultimoMensaje;
             if (datosRespuestaListMensajes.getMessages().size() != 0){
                 ultimoMensaje = datosRespuestaListMensajes.getMessages().get(datosRespuestaListMensajes.getMessages().size()-1);
             }else{
                 ultimoMensaje = null;
             }
 
-            int unreadMessages = datosRespuestaListMensajes.getCount() - numeroMensajesVistos(chat.getId(), activity);
+            final int unreadMessages = datosRespuestaListMensajes.getCount() - numeroMensajesVistos(chat.getId(), activity);
 
-            dibujarChat(activity, chat, ultimoMensaje, unreadMessages);
+            activity.runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    dibujarChat(activity, chat, ultimoMensaje, unreadMessages);
+                }
+            });
 
         }
 
@@ -723,7 +788,6 @@ public class ClasePeticionesRest {
                 borrarSharedPreferences(context);
                 //CerrarSesion(context);
             }
-            Log.e("PUSH", "RB: " + new String(responseBody));
             Gson gson = new Gson();
             Error mensajeError = gson.fromJson(new String(responseBody), Error.class);
 
@@ -765,8 +829,18 @@ public class ClasePeticionesRest {
                     break;
                 }
             }
-            sendNotification(pushMessage, chat, service);
 
+            if (PantallaInicio.appIsInForeground) {
+                if (PantallaInicio.nameOfActivityInForeground.equals("Pantallas.PantallaConversacion")){
+                    if (PantallaConversacion.idChat == chat.getId()){
+                        ListMensajesSync(PantallaInicio.activityInForeground, chat);
+                    }
+                }else if (PantallaInicio.nameOfActivityInForeground.equals("Pantallas.PantallaUsuarioLogueado")){
+                    ListChatsSync(PantallaInicio.activityInForeground);
+                }
+            }else{
+                sendNotification(pushMessage, chat, service);
+            }
         }
 
         @Override
@@ -802,13 +876,13 @@ public class ClasePeticionesRest {
         editor.putBoolean("sesion", true);
         editor.putLong("valid_until", datosRespuestaRegistro.getSession().getValid_until().getTime());
         editor.commit();
-        enviarFirebaseToken(context, new DatosEnviarFirebaseToken(token));
+        new EnviarFirebaseTokenAsync(context, new DatosEnviarFirebaseToken(token)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
     public void dibujarChat(Activity activity, Chat chat, Message ultimoMensaje, int unreadMessages){
 
-        ListView listaChats = activity.findViewById(R.id.ListViewChats);
+        ListView listaChats = PantallaUsuarioLogueado.listView;
 
         PantallaUsuarioLogueado.myList.add(new InformacionListChat(chat, ultimoMensaje, unreadMessages));
 
@@ -816,6 +890,7 @@ public class ClasePeticionesRest {
 
         AdapterChatList adapterChatList = new AdapterChatList(activity, PantallaUsuarioLogueado.myList);
         listaChats.setAdapter(adapterChatList);
+
         listaChats.setOnItemClickListener(new ChatListClickListener(PantallaUsuarioLogueado.myList, activity));
         adapterChatList.notifyDataSetChanged();
 
@@ -933,6 +1008,23 @@ public class ClasePeticionesRest {
                 (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    public class EnviarFirebaseTokenAsync extends AsyncTask{
+
+        Context context;
+        DatosEnviarFirebaseToken datosEnviarFirebaseToken;
+
+        public EnviarFirebaseTokenAsync(Context context, DatosEnviarFirebaseToken datosEnviarFirebaseToken) {
+            this.context = context;
+            this.datosEnviarFirebaseToken = datosEnviarFirebaseToken;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            enviarFirebaseToken(context, datosEnviarFirebaseToken);
+            return null;
+        }
     }
 
     public static boolean tokenExpirado(Context context){

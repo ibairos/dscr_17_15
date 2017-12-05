@@ -1,5 +1,6 @@
 package es.unavarra.tlm.dscr_17_15.Pantallas;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -7,15 +8,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-
 import es.unavarra.tlm.dscr_17_15.REST.ClasePeticionesRest;
 import es.unavarra.tlm.dscr_17_15.EventListeners.ManejadorOnClick;
 import es.unavarra.tlm.dscr_17_15.R;
-import es.unavarra.tlm.dscr_17_15.service.HandleFirebaseTokensService;
-import es.unavarra.tlm.dscr_17_15.service.HandleNotificationsService;
 
 public class PantallaInicio extends AppCompatActivity {
+
+    public static boolean appIsInForeground;
+    public static String nameOfActivityInForeground;
+    public static Activity activityInForeground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,24 @@ public class PantallaInicio extends AppCompatActivity {
             }
         }
 
+
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appIsInForeground = true;
+        nameOfActivityInForeground = getLocalClassName();
+        activityInForeground = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        appIsInForeground = false;
+        nameOfActivityInForeground = null;
+        activityInForeground = null;
+    }
 
 }

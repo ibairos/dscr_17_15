@@ -2,7 +2,6 @@ package es.unavarra.tlm.dscr_17_15.Pantallas;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -41,4 +40,22 @@ public class PantallaMiPerfil extends AppCompatActivity {
         findViewById(R.id.BotonEliminarCuenta).setOnClickListener(new EliminarUsuario(this));
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PantallaInicio.appIsInForeground = true;
+        PantallaInicio.nameOfActivityInForeground = getLocalClassName();
+        PantallaInicio.activityInForeground = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PantallaInicio.appIsInForeground = false;
+        PantallaInicio.nameOfActivityInForeground = null;
+        PantallaInicio.activityInForeground = null;
+    }
+
 }

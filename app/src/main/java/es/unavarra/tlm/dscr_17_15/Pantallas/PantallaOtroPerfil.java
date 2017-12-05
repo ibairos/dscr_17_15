@@ -23,4 +23,22 @@ public class PantallaOtroPerfil extends AppCompatActivity {
         ((TextView)findViewById(R.id.TextViewOtherMail)).setText(user.getEmail());
         ((TextView)findViewById(R.id.TextViewOtherName)).setText(user.getName());
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PantallaInicio.appIsInForeground = true;
+        PantallaInicio.nameOfActivityInForeground = getLocalClassName();
+        PantallaInicio.activityInForeground = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PantallaInicio.appIsInForeground = false;
+        PantallaInicio.nameOfActivityInForeground = null;
+        PantallaInicio.activityInForeground = null;
+    }
+
 }

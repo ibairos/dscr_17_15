@@ -100,7 +100,8 @@
             android:layout_weight="1"
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification"
+            android:text="Hola bb"
+            android:textAppearance="@style/TextAppearance.Compat.Notification"
             tools:ignore="NestedWeights" />
     </LinearLayout>
 

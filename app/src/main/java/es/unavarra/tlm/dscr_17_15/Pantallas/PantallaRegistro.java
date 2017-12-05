@@ -28,4 +28,22 @@ public class PantallaRegistro extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PantallaInicio.appIsInForeground = true;
+        PantallaInicio.nameOfActivityInForeground = getLocalClassName();
+        PantallaInicio.activityInForeground = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PantallaInicio.appIsInForeground = false;
+        PantallaInicio.nameOfActivityInForeground = null;
+        PantallaInicio.activityInForeground = null;
+    }
+
 }

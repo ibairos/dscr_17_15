@@ -10,8 +10,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
-
-
     <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more. -->
     <meta-data

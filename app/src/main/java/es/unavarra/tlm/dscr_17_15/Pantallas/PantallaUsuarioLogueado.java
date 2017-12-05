@@ -24,6 +24,7 @@ import es.unavarra.tlm.dscr_17_15.R;
 
 public class PantallaUsuarioLogueado extends AppCompatActivity {
 
+    public static ListView listView;
     public static ArrayList<InformacionListChat> myList = new ArrayList<>();
     ClasePeticionesRest clasePeticionesRest = new ClasePeticionesRest();
 
@@ -34,6 +35,8 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         myList.clear();
         setContentView(R.layout.activity_pantalla_usuario_logueado);
         (findViewById(R.id.ImagenMiPerfil)).setOnClickListener(new IrAMiPerfil(this));
+        listView = findViewById(R.id.ListViewChats);
+
         SharedPreferences settings = getSharedPreferences("Config", 0);
         Log.e("PUSH", "2- " + settings.getString("firebase_token", "EMPTY"));
     }
@@ -65,7 +68,18 @@ public class PantallaUsuarioLogueado extends AppCompatActivity {
         botonFlotanteBuscarChat.setOnClickListener(new MostrarLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, false));
         botonFlotanteBuscarChatX.setOnClickListener(new MostrarLayoutBuscarChat(this, layoutBuscarChat, botonFlotanteBuscarChat, botonFlotanteBuscarChatX, true));
 
+        PantallaInicio.appIsInForeground = true;
+        PantallaInicio.nameOfActivityInForeground = getLocalClassName();
+        PantallaInicio.activityInForeground = this;
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PantallaInicio.appIsInForeground = false;
+        PantallaInicio.nameOfActivityInForeground = null;
+        PantallaInicio.activityInForeground = null;
     }
 
 }

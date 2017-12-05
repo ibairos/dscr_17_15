@@ -6,8 +6,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
-
 import es.unavarra.tlm.dscr_17_15.Objects.Chat;
 import es.unavarra.tlm.dscr_17_15.R;
 
@@ -26,7 +24,23 @@ public class PantallaInfoChat extends AppCompatActivity {
         ((TextView)findViewById(R.id.usuario1InfoChat)).setText(chat.getUsers()[0].getEmail());
         ((TextView)findViewById(R.id.usuario2InfoChat)).setText(chat.getUsers()[1].getEmail());
 
-
-
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PantallaInicio.appIsInForeground = true;
+        PantallaInicio.nameOfActivityInForeground = getLocalClassName();
+        PantallaInicio.activityInForeground = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PantallaInicio.appIsInForeground = false;
+        PantallaInicio.nameOfActivityInForeground = null;
+        PantallaInicio.activityInForeground = null;
+    }
+
 }
