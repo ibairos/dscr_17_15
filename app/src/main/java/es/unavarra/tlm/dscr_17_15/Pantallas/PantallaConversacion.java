@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.greendao.database.Database;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,26 +83,29 @@ public class PantallaConversacion extends AppCompatActivity {
 
     public static void mensajesVistos(Activity activity, int idChat){
 
-        int countSeenMessages = PantallaConversacion.messages.size();
+        try {
+            int countSeenMessages = PantallaConversacion.messages.size();
+            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(activity, "db");
+            SQLiteDatabase db = helper.getWritableDatabase();
+            DaoMaster daoMaster = new DaoMaster(db);
+            DaoSession daoSession = daoMaster.newSession();
+            SeenMessagesDao seenMessagesDao = daoSession.getSeenMessagesDao();
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(activity, "db");
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        DaoSession daoSession = daoMaster.newSession();
-        SeenMessagesDao seenMessagesDao = daoSession.getSeenMessagesDao();
-
-        List<SeenMessages> seenMessagesList = seenMessagesDao.queryBuilder().where(SeenMessagesDao.Properties.IdChat.eq(idChat)).list();
-        if (seenMessagesList.size() == 0){
-            SeenMessages auxSeenMessages = new SeenMessages();
-            auxSeenMessages.setIdChat(idChat);
-            auxSeenMessages.setSeenMessages(countSeenMessages);
-            seenMessagesDao.insert(auxSeenMessages);
-        }else{
-            if (seenMessagesList.size() == 1){
-                SeenMessages aux = seenMessagesList.get(0);
-                aux.setSeenMessages(countSeenMessages);
-                daoSession.getSeenMessagesDao().update(aux);
+            List<SeenMessages> seenMessagesList = seenMessagesDao.queryBuilder().where(SeenMessagesDao.Properties.IdChat.eq(idChat)).list();
+            if (seenMessagesList.size() == 0) {
+                SeenMessages auxSeenMessages = new SeenMessages();
+                auxSeenMessages.setIdChat(idChat);
+                auxSeenMessages.setSeenMessages(countSeenMessages);
+                seenMessagesDao.insert(auxSeenMessages);
+            } else {
+                if (seenMessagesList.size() == 1) {
+                    SeenMessages aux = seenMessagesList.get(0);
+                    aux.setSeenMessages(countSeenMessages);
+                    daoSession.getSeenMessagesDao().update(aux);
+                }
             }
+        }catch (Exception e){
+
         }
 
     }

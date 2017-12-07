@@ -778,7 +778,7 @@ public class ClasePeticionesRest {
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-            toastLargo(context, "TOKEN REFRESHED");
+            //toastLargo(context, "TOKEN REFRESHED");
         }
 
         @Override
@@ -904,10 +904,8 @@ public class ClasePeticionesRest {
 
         AdapterMensajesConversacion adapterMensajesConversacion = new AdapterMensajesConversacion(activity.getApplicationContext(), PantallaConversacion.messages);
         listaMensajes.setAdapter(adapterMensajesConversacion);
-        //listaMensajes.setOnItemClickListener(new ChatListClickListener(myList, activity));
         adapterMensajesConversacion.notifyDataSetChanged();
 
-        //listaMensajes.smoothScrollToPosition(PantallaConversacion.messages.size()-1);
         listaMensajes.setSelection(PantallaConversacion.messages.size()-1);
 
         PantallaConversacion.mensajesVistos(activity, idChat);
@@ -926,20 +924,24 @@ public class ClasePeticionesRest {
 
     public int numeroMensajesVistos(long idChat, Activity activity){
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(activity, "db");
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        DaoSession daoSession = daoMaster.newSession();
-        SeenMessagesDao seenMessagesDao = daoSession.getSeenMessagesDao();
+        try {
+            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(activity, "db");
+            SQLiteDatabase db = helper.getWritableDatabase();
+            DaoMaster daoMaster = new DaoMaster(db);
+            DaoSession daoSession = daoMaster.newSession();
+            SeenMessagesDao seenMessagesDao = daoSession.getSeenMessagesDao();
 
-        List<SeenMessages> seenMessagesList = seenMessagesDao.queryBuilder().where(SeenMessagesDao.Properties.IdChat.eq(idChat)).list();
-        if (seenMessagesList.size() == 0){
-            return 0;
-        }else{
-            if (seenMessagesList.size() == 1){
-                SeenMessages aux = seenMessagesList.get(0);
-                return aux.getSeenMessages();
+            List<SeenMessages> seenMessagesList = seenMessagesDao.queryBuilder().where(SeenMessagesDao.Properties.IdChat.eq(idChat)).list();
+            if (seenMessagesList.size() == 0) {
+                return 0;
+            } else {
+                if (seenMessagesList.size() == 1) {
+                    SeenMessages aux = seenMessagesList.get(0);
+                    return aux.getSeenMessages();
+                }
+                return 0;
             }
+        }catch (Exception e){
             return 0;
         }
 
